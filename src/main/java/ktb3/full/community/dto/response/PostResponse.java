@@ -22,6 +22,9 @@ public class PostResponse {
     @Schema(description = "제목", example = "테스트 제목입니다.")
     private final String title;
 
+    @Schema(description = "내용", example = "테스트 게시글입니다.")
+    private final String content;
+
     @Schema(description = "작성자 닉네임", example = "testNick")
     private final String authorNickname;
 
@@ -45,6 +48,7 @@ public class PostResponse {
         return builder()
                 .postId(post.getId())
                 .title(post.getTitle())
+                .content(post.getContent())
                 .authorNickname(AccountValidator.getAuthorName(post.getUser()))
                 .authorProfile(AccountValidator.getAuthorProfile(post.getUser()))
                 .createdDate(post.getCreatedAt())
