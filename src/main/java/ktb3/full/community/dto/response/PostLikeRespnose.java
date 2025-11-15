@@ -11,4 +11,7 @@ public class PostLikeRespnose {
 
     @Schema(description = "좋아요 여부", example = "true")
     private final boolean liked;
+
+    @Schema(description = "좋아요 수", example = "30")
+    private final int likeCount;
 }

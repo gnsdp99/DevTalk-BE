@@ -30,6 +30,6 @@ public class PostLikeCreateOrUpdateService {
 
         postLike.toggle();
 
-        return new PostLikeRespnose(postLike.isLiked());
+        return new PostLikeRespnose(postLike.isLiked(), post.getLikeCount());
     }
 }
