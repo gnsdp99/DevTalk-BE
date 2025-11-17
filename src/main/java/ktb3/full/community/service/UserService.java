@@ -11,6 +11,7 @@ import ktb3.full.community.dto.response.UserValidationResponse;
 import ktb3.full.community.dto.response.UserAccountResponse;
 import ktb3.full.community.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ImageUploadService imageUploadService;
+    private final PasswordEncoder passwordEncoder;
 
     public UserValidationResponse validateEmailAvailable(String email) {
         return new UserValidationResponse(!userRepository.existsByEmail(email));
@@ -35,7 +37,8 @@ public class UserService {
         validateEmailDuplication(request.getEmail());
         validateNicknameDuplication(request.getNickname());
         String profilePath = imageUploadService.saveImageAndGetPath(request.getProfile());
-        return userRepository.save(request.toUserEntity(profilePath)).getId();
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        return userRepository.save(request.toUserEntity(encodedPassword, profilePath)).getId();
     }
 
     public UserAccountResponse login(UserLoginRequest request) {
@@ -79,7 +82,7 @@ public class UserService {
     @Transactional
     public void updatePassword(long userId, UserPasswordUpdateRequest request) {
         User user = getOrThrow(userId);
-        user.updatePassword(request.getPassword());
+        user.updatePassword(passwordEncoder.encode(request.getPassword()));
     }
 
     public void validatePermission(long requestUserId, long actualUserId) {
