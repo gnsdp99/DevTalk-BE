@@ -19,8 +19,22 @@ logging:
   level:
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
+    org.springframework.security: debug
 
 file:
   path:
     base: src/main/resources/static
     image: /images
+
+server:
+  port: 8443
+  ssl:
+    enabled: true
+    certificate: classpath:localhost.pem
+    certificate-private-key: classpath:localhost-key.pem
+
+  servlet:
+    session:
+      cookie:
+        same-site: none
+        secure: true
