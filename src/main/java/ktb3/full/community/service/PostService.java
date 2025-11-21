@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -52,10 +53,10 @@ public class PostService {
         return PostDetailResponse.from(post, false);
     }
 
+    @PreAuthorize("@postRepository.findById(#postId).get().getUser().getId() == principal.userId")
     @Transactional
-    public PostDetailResponse updatePost(long userId, long postId, PostUpdateRequest request) {
+    public PostDetailResponse updatePost(long postId, PostUpdateRequest request) {
         Post post = getOrThrow(postId);
-        userService.validatePermission(userId, post.getUser().getId());
 
         if (request.getTitle() != null) {
             post.updateTitle(request.getTitle());
@@ -70,7 +71,7 @@ public class PostService {
             post.updateImage(imagePath, request.getImage().getOriginalFilename());
         }
 
-        boolean liked = postLikeService.isLiked(userId, postId);
+        boolean liked = postLikeService.isLiked(post.getUser().getId(), postId);
 
         return PostDetailResponse.from(post, liked);
     }

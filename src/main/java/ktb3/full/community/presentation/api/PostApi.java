@@ -68,7 +68,6 @@ public interface PostApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     ResponseEntity<ApiSuccessResponse<PostDetailResponse>> updatePost(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") @Parameter(description = "게시글 ID") long postId,
             @Valid @ModelAttribute PostUpdateRequest request);
 
@@ -83,7 +82,6 @@ public interface PostApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     ResponseEntity<ApiSuccessResponse<Void>> deletePost(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") @Parameter(description = "게시글 ID") long postId);
 
     @Operation(summary = "좋아요", description = "좋아요를 누르거나 취소합니다.")

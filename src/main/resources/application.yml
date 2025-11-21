@@ -17,6 +17,7 @@ spring:
 
 logging:
   level:
+    ktb3.full.community: debug
     org.hibernate.SQL: debug
     org.hibernate.orm.jdbc.bind: trace
     org.springframework.security: debug

@@ -54,19 +54,17 @@ public class CommentApiController implements CommentApi {
 
     @PatchMapping("/comments/{commentId}")
     public ResponseEntity<ApiSuccessResponse<CommentResponse>> updateComment(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("commentId") long commentId,
             @Valid @RequestBody CommentUpdateRequest request) {
-        CommentResponse response = commentService.updateComment(userDetails.getUserId(), commentId, request);
+        CommentResponse response = commentService.updateComment(commentId, request);
         return ResponseEntity.ok()
                 .body(ApiSuccessResponse.of(response));
     }
 
     @DeleteMapping("/comments/{commentId}")
     public ResponseEntity<ApiSuccessResponse<Void>> deleteComment(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("commentId") long commentId) {
-        commentService.deleteComment(userDetails.getUserId(), commentId);
+        commentService.deleteComment(commentId);
         return ResponseEntity.ok()
                 .body(ApiSuccessResponse.getBaseResponse());
     }

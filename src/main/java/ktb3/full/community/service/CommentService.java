@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,10 +46,10 @@ public class CommentService {
         return CommentResponse.from(comment);
     }
 
+    @PreAuthorize("@commentRepository.findById(#commentId).get().getUser().getId() == principal.userId")
     @Transactional
-    public CommentResponse updateComment(long userId, long commentId, CommentUpdateRequest request) {
+    public CommentResponse updateComment(long commentId, CommentUpdateRequest request) {
         Comment comment = getOrThrow(commentId);
-        userService.validatePermission(userId, comment.getUser().getId());
 
         if (request.getContent() != null) {
             comment.updateContent(request.getContent());
@@ -57,11 +58,11 @@ public class CommentService {
         return CommentResponse.from(comment);
     }
 
+    @PreAuthorize("@commentRepository.findById(#commentId).get().getUser().getId() == principal.userId")
     @Transactional
-    public void deleteComment(long userId, long commentId) {
+    public void deleteComment(long commentId) {
         // soft delete
         Comment comment = getOrThrow(commentId);
-        userService.validatePermission(userId, comment.getUser().getId());
         comment.delete();
         Post post = postService.getForUpdateOrThrow(comment.getPost().getId());
         post.decreaseCommentCount();

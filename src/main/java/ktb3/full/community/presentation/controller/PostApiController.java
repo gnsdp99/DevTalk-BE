@@ -61,19 +61,17 @@ public class PostApiController implements PostApi {
 
     @PatchMapping("/{postId}")
     public ResponseEntity<ApiSuccessResponse<PostDetailResponse>> updatePost(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId,
             @Valid @ModelAttribute PostUpdateRequest request) {
-        PostDetailResponse response = postService.updatePost(userDetails.getUserId(), postId, request);
+        PostDetailResponse response = postService.updatePost(postId, request);
         return ResponseEntity.ok()
                 .body(ApiSuccessResponse.of(response));
     }
 
     @DeleteMapping("/{postId}")
     public ResponseEntity<ApiSuccessResponse<Void>> deletePost(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId) {
-        postDeleteService.deletePost(userDetails.getUserId(), postId);
+        postDeleteService.deletePost(postId);
         return ResponseEntity.ok()
                 .body(ApiSuccessResponse.getBaseResponse());
     }

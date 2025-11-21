@@ -70,7 +70,6 @@ public interface CommentApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     ResponseEntity<ApiSuccessResponse<CommentResponse>> updateComment(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("commentId") @Parameter(description = "댓글 ID") long commentId,
             @Valid @RequestBody CommentUpdateRequest request);
 
@@ -85,6 +84,5 @@ public interface CommentApi {
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
     ResponseEntity<ApiSuccessResponse<Void>> deleteComment(
-            @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("commentId") @Parameter(description = "댓글 ID") long commentId);
 }

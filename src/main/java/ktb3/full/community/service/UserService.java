@@ -85,12 +85,6 @@ public class UserService {
         user.updatePassword(passwordEncoder.encode(request.getPassword()));
     }
 
-    public void validatePermission(long requestUserId, long actualUserId) {
-        if (requestUserId != actualUserId) {
-            throw new NoPermissionException();
-        }
-    }
-
     public User getOrThrow(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(UserNotFoundException::new);
