@@ -17,9 +17,9 @@ public class UserProfileResponse {
     private final String nickname;
 
     @Schema(description = "프로필 이미지", example = "https://test.kr/test.jpg")
-    private final String profilePath;
+    private final String profileImageName;
 
     public static UserProfileResponse from(User user) {
-        return new UserProfileResponse(user.getId(), user.getNickname(), user.getProfilePath());
+        return new UserProfileResponse(user.getId(), user.getNickname(), user.getProfileImageName());
     }
 }

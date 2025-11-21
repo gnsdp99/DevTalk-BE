@@ -33,9 +33,9 @@ public class UserRegisterRequest {
     private final String nickname;
 
     @Schema(description = "프로필 이미지", example = "https://test.kr/test.jpg")
-    private final MultipartFile profile;
+    private final MultipartFile profileImage;
 
-    public User toUserEntity(String encodedPassword, String profilePath) {
-        return User.create(email, encodedPassword, nickname, profilePath);
+    public User toUserEntity(String encodedPassword, String profileImageName) {
+        return User.create(email, encodedPassword, nickname, profileImageName, false);
     }
 }

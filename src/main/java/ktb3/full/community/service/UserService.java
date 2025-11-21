@@ -35,9 +35,9 @@ public class UserService {
     public long register(UserRegisterRequest request) {
         validateEmailDuplication(request.getEmail());
         validateNicknameDuplication(request.getNickname());
-        String profilePath = imageUploadService.saveImageAndGetPath(request.getProfile());
+        String profileImageName = imageUploadService.saveImageAndGetPath(request.getProfileImage());
         String encodedPassword = passwordEncoder.encode(request.getPassword());
-        return userRepository.save(request.toUserEntity(encodedPassword, profilePath)).getId();
+        return userRepository.save(request.toUserEntity(encodedPassword, profileImageName)).getId();
     }
 
     public UserAccountResponse getUserAccount(long userId) {
@@ -59,9 +59,9 @@ public class UserService {
             user.updateNickname(request.getNickname());
         }
 
-        if (request.getProfile() != null) {
-            String profilePath = imageUploadService.saveImageAndGetPath(request.getProfile());
-            user.updateProfile(profilePath);
+        if (request.getProfileImage() != null) {
+            String profileImageName = imageUploadService.saveImageAndGetPath(request.getProfileImage());
+            user.updateProfileImageName(profileImageName);
         }
 
         return UserAccountResponse.from(user);

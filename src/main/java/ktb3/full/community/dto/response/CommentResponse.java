@@ -44,7 +44,7 @@ public class CommentResponse {
                 .postId(comment.getPost().getId())
                 .userId(AccountValidator.getUserId(comment.getUser()))
                 .authorNickname(AccountValidator.getAuthorName(comment.getUser()))
-                .authorProfile(AccountValidator.getAuthorProfile(comment.getUser()))
+                .authorProfile(AccountValidator.getAuthorProfileImageName(comment.getUser()))
                 .content(comment.getContent())
                 .createdDate(comment.getCreatedAt())
                 .build();

@@ -23,13 +23,13 @@ public class UserAccountResponse {
     private final String nickname;
 
     @Schema(description = "프로필 이미지", example = "https://test.kr/test.jpg")
-    private final String profile;
+    private final String profileImageName;
 
     @Schema(description = "생성일", example = "2025-10-14 22:16:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime createdAt;
 
     public static UserAccountResponse from(User user) {
-        return new UserAccountResponse(user.getId(), user.getEmail(), user.getNickname(), user.getProfilePath(), user.getCreatedAt());
+        return new UserAccountResponse(user.getId(), user.getEmail(), user.getNickname(), user.getProfileImageName(), user.getCreatedAt());
     }
 }

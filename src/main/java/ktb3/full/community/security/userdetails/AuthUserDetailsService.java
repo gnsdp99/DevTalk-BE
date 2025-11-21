@@ -23,7 +23,7 @@ public class AuthUserDetailsService implements UserDetailsService {
                 .userId(user.getId())
                 .username(user.getEmail())
                 .password(user.getPassword())
-                .profilePath(user.getProfilePath())
+                .profileImageName(user.getProfileImageName())
                 .build();
     }
 }

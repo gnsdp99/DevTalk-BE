@@ -16,5 +16,5 @@ public class UserAccountUpdateRequest {
     private final String nickname;
 
     @Schema(description = "프로필 이미지", example = "https://test.kr/test.jpg")
-    private final MultipartFile profile;
+    private final MultipartFile profileImage;
 }

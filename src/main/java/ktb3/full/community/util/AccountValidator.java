@@ -13,8 +13,8 @@ public class AccountValidator {
         return isUserInactive(user) ? Constants.DELETED_AUTHOR : user.getNickname();
     }
 
-    public static String getAuthorProfile(User user) {
-        return isUserInactive(user) ? null : user.getProfilePath();
+    public static String getAuthorProfileImageName(User user) {
+        return isUserInactive(user) ? null : user.getProfileImageName();
     }
 
     private static boolean isUserInactive(User user) {

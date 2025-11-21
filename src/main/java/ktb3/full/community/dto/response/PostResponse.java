@@ -29,7 +29,7 @@ public class PostResponse {
     private final String authorNickname;
 
     @Schema(description = "작성자 프로필", example = "https://test.kr/test.jpg")
-    private final String authorProfile;
+    private final String authorProfileImageName;
 
     @Schema(description = "작성일", example = "2025-10-14 22:16:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -50,7 +50,7 @@ public class PostResponse {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .authorNickname(AccountValidator.getAuthorName(post.getUser()))
-                .authorProfile(AccountValidator.getAuthorProfile(post.getUser()))
+                .authorProfileImageName(AccountValidator.getAuthorProfileImageName(post.getUser()))
                 .createdDate(post.getCreatedAt())
                 .likeCount(post.getLikeCount())
                 .commentCount(post.getCommentCount())

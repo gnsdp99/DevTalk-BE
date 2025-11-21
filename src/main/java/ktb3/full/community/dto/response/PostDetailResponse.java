@@ -66,7 +66,7 @@ public class PostDetailResponse {
                 .title(post.getTitle())
                 .userId(AccountValidator.getUserId(post.getUser()))
                 .authorNickname(AccountValidator.getAuthorName(post.getUser()))
-                .authorProfile(AccountValidator.getAuthorProfile(post.getUser()))
+                .authorProfile(AccountValidator.getAuthorProfileImageName(post.getUser()))
                 .content(post.getContent())
                 .imagePath(post.getImagePath())
                 .imageName(post.getOriginImageName())

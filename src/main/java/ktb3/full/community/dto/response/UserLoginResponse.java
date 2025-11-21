@@ -15,5 +15,5 @@ public class UserLoginResponse {
     private final long userId;
 
     @Schema(description = "프로필 이미지", example = "https://test.kr/test.jpg")
-    private final String profile;
+    private final String profileImageName;
 }

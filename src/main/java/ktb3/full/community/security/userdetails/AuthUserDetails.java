@@ -17,7 +17,7 @@ public class AuthUserDetails implements UserDetails, CredentialsContainer {
     private final Long userId;
     private final String username;
     private String password;
-    private final String profilePath;
+    private final String profileImageName;
 
     public static AuthUserDetails onlyUserId(AuthUserDetails userDetails) {
         return AuthUserDetails.builder()

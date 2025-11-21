@@ -33,7 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         UserLoginResponse userLoginResponse = UserLoginResponse.builder()
                 .userId(principal.getUserId())
-                .profile(principal.getProfilePath())
+                .profileImageName(principal.getProfileImageName())
                 .build();
         ApiSuccessResponse<UserLoginResponse> apiResponse = ApiSuccessResponse.of(userLoginResponse);
 
