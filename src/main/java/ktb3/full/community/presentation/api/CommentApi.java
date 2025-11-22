@@ -52,7 +52,7 @@ public interface CommentApi {
             @ApiResponse(responseCode = "401", description = "인증 필요",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
     })
-    ResponseEntity<ApiSuccessResponse<CommentResponse>> createComment(
+    ResponseEntity<ApiSuccessResponse<Void>> createComment(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") @Parameter(description = "게시글 ID") long postId,
             @Valid @RequestBody CommentCreateRequest request);
@@ -69,7 +69,7 @@ public interface CommentApi {
             @ApiResponse(responseCode = "404", description = "댓글을 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<ApiSuccessResponse<CommentResponse>> updateComment(
+    ResponseEntity<ApiSuccessResponse<Void>> updateComment(
             @Positive @PathVariable("commentId") @Parameter(description = "댓글 ID") long commentId,
             @Valid @RequestBody CommentUpdateRequest request);
 

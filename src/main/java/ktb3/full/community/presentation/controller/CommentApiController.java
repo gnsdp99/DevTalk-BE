@@ -43,22 +43,22 @@ public class CommentApiController implements CommentApi {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<ApiSuccessResponse<CommentResponse>> createComment(
+    public ResponseEntity<ApiSuccessResponse<Void>> createComment(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId,
             @Valid @RequestBody CommentCreateRequest request) {
-        CommentResponse response = commentService.createComment(userDetails.getUserId(), postId, request);
-        return ResponseEntity.created(URI.create(String.format("/comments/%d", response.getCommentId())))
-                .body(ApiSuccessResponse.of(response));
+        long commentId = commentService.createComment(userDetails.getUserId(), postId, request);
+        return ResponseEntity.created(URI.create(String.format("/comments/%d", commentId)))
+                .body(ApiSuccessResponse.getBaseResponse());
     }
 
     @PatchMapping("/comments/{commentId}")
-    public ResponseEntity<ApiSuccessResponse<CommentResponse>> updateComment(
+    public ResponseEntity<ApiSuccessResponse<Void>> updateComment(
             @Positive @PathVariable("commentId") long commentId,
             @Valid @RequestBody CommentUpdateRequest request) {
-        CommentResponse response = commentService.updateComment(commentId, request);
+        commentService.updateComment(commentId, request);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(response));
+                .body(ApiSuccessResponse.getBaseResponse());
     }
 
     @DeleteMapping("/comments/{commentId}")

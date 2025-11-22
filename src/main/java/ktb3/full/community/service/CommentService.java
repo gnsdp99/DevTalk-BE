@@ -40,25 +40,23 @@ public class CommentService {
     }
 
     @Transactional
-    public CommentResponse createComment(long userId, long postId, CommentCreateRequest request) {
+    public long createComment(long userId, long postId, CommentCreateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Post post = postRepository.findByIdForUpdate(postId).orElseThrow(PostNotFoundException::new);
         Comment comment = request.toEntity(user, post);
         post.increaseCommentCount();
         commentRepository.save(comment);
-        return CommentResponse.from(comment);
+        return CommentResponse.from(comment).getCommentId();
     }
 
     @PreAuthorize("@commentRepository.findById(#commentId).get().getUser().getId() == principal.userId")
     @Transactional
-    public CommentResponse updateComment(long commentId, CommentUpdateRequest request) {
+    public void updateComment(long commentId, CommentUpdateRequest request) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(CommentNotFoundException::new);
 
         if (request.getContent() != null) {
             comment.updateContent(request.getContent());
         }
-
-        return CommentResponse.from(comment);
     }
 
     @PreAuthorize("@commentRepository.findById(#commentId).get().getUser().getId() == principal.userId")

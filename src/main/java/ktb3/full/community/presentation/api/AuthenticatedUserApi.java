@@ -37,7 +37,7 @@ public interface AuthenticatedUserApi {
             @ApiResponse(responseCode = "401", description = "인증 필요",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<ApiSuccessResponse<UserAccountResponse>> updateUserAccount(
+    ResponseEntity<ApiSuccessResponse<Void>> updateUserAccount(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest);
 

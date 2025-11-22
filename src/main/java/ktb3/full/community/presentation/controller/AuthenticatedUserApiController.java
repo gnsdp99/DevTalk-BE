@@ -30,12 +30,12 @@ public class AuthenticatedUserApiController implements AuthenticatedUserApi {
     }
 
     @PatchMapping
-    public ResponseEntity<ApiSuccessResponse<UserAccountResponse>> updateUserAccount(
+    public ResponseEntity<ApiSuccessResponse<Void>> updateUserAccount(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest) {
-        UserAccountResponse userAccountResponse = userService.updateAccount(userDetails.getUserId(), userAccountUpdateRequest);
+        userService.updateAccount(userDetails.getUserId(), userAccountUpdateRequest);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(userAccountResponse));
+                .body(ApiSuccessResponse.getBaseResponse());
     }
 
     @PatchMapping("/password")

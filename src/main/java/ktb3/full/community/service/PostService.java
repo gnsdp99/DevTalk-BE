@@ -43,21 +43,19 @@ public class PostService {
     }
 
     @Transactional
-    public PostDetailResponse createPost(long userId, PostCreateRequest request) {
+    public long createPost(long userId, PostCreateRequest request) {
         MultipartFile image = request.getImage();
         String imagePath = imageUploadService.saveImageAndGetPath(request.getImage());
         String imageName = image != null ? image.getOriginalFilename() : null;
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
         Post post = request.toEntity(user, imagePath, imageName);
-
         postRepository.save(post);
-
-        return PostDetailResponse.from(post, false);
+        return PostDetailResponse.from(post, false).getPostId();
     }
 
     @PreAuthorize("@postRepository.findById(#postId).get().getUser().getId() == principal.userId")
     @Transactional
-    public PostDetailResponse updatePost(long postId, PostUpdateRequest request) {
+    public void updatePost(long postId, PostUpdateRequest request) {
         Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
 
         if (request.getTitle() != null) {
@@ -72,10 +70,6 @@ public class PostService {
             String imagePath = imageUploadService.saveImageAndGetPath(request.getImage());
             post.updateImage(imagePath, request.getImage().getOriginalFilename());
         }
-
-        boolean liked = postLikeService.isLiked(post.getUser().getId(), postId);
-
-        return PostDetailResponse.from(post, liked);
     }
 
     @Transactional

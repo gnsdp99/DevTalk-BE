@@ -51,7 +51,7 @@ public interface PostApi {
             @ApiResponse(responseCode = "401", description = "인증 필요",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
     })
-    ResponseEntity<ApiSuccessResponse<PostDetailResponse>> createPost(
+    ResponseEntity<ApiSuccessResponse<Void>> createPost(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute PostCreateRequest request);
 
@@ -67,7 +67,7 @@ public interface PostApi {
             @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<ApiSuccessResponse<PostDetailResponse>> updatePost(
+    ResponseEntity<ApiSuccessResponse<Void>> updatePost(
             @Positive @PathVariable("postId") @Parameter(description = "게시글 ID") long postId,
             @Valid @ModelAttribute PostUpdateRequest request);
 

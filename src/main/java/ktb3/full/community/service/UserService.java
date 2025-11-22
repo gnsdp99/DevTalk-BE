@@ -51,7 +51,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserAccountResponse updateAccount(long userId, UserAccountUpdateRequest request) {
+    public void updateAccount(long userId, UserAccountUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         if (request.getNickname() != null) {
@@ -63,8 +63,6 @@ public class UserService {
             String profileImageName = imageUploadService.saveImageAndGetPath(request.getProfileImage());
             user.updateProfileImageName(profileImageName);
         }
-
-        return UserAccountResponse.from(user);
     }
 
     @Transactional

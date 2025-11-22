@@ -50,22 +50,22 @@ public class PostApiController implements PostApi {
     }
 
     @PostMapping
-    public ResponseEntity<ApiSuccessResponse<PostDetailResponse>> createPost(
+    public ResponseEntity<ApiSuccessResponse<Void>> createPost(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute PostCreateRequest request
     ) {
-        PostDetailResponse response = postService.createPost(userDetails.getUserId(), request);
-        return ResponseEntity.created(URI.create(String.format("/posts/%d", response.getPostId())))
-                .body(ApiSuccessResponse.of(response));
+        long postId = postService.createPost(userDetails.getUserId(), request);
+        return ResponseEntity.created(URI.create(String.format("/posts/%d", postId)))
+                .body(ApiSuccessResponse.getBaseResponse());
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<ApiSuccessResponse<PostDetailResponse>> updatePost(
+    public ResponseEntity<ApiSuccessResponse<Void>> updatePost(
             @Positive @PathVariable("postId") long postId,
             @Valid @ModelAttribute PostUpdateRequest request) {
-        PostDetailResponse response = postService.updatePost(postId, request);
+        postService.updatePost(postId, request);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(response));
+                .body(ApiSuccessResponse.getBaseResponse());
     }
 
     @DeleteMapping("/{postId}")
