@@ -32,6 +32,7 @@ public class UserRegisterRequest {
     @NicknamePattern
     private final String nickname;
 
+    @NotNull
     @Schema(description = "프로필 이미지", example = "https://test.kr/test.jpg")
     private final MultipartFile profileImage;
 

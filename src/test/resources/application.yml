@@ -7,3 +7,8 @@ spring:
 
   jpa:
     show-sql: true
+
+file:
+  path:
+    base: src/test/resources/static
+    image: /images
