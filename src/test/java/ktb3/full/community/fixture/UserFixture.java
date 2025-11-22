@@ -1,6 +1,7 @@
 package ktb3.full.community.fixture;
 
 import ktb3.full.community.domain.entity.User;
+import org.springframework.test.util.ReflectionTestUtils;
 
 public class UserFixture {
 
@@ -36,5 +37,11 @@ public class UserFixture {
 
     public static User createWithNicknameAndProfileImageName(String nickname, String profileImageName) {
         return createUser(null, null, nickname, profileImageName, false);
+    }
+
+    public static User createWithId(long id) {
+        User user = createUser();
+        ReflectionTestUtils.setField(user, "id", id);
+        return user;
     }
 }
