@@ -1,5 +1,6 @@
 package ktb3.full.community.service;
 
+import ktb3.full.community.common.exception.CannotChangeSameNicknameException;
 import ktb3.full.community.common.exception.CannotChangeSamePasswordException;
 import ktb3.full.community.common.exception.DuplicatedEmailException;
 import ktb3.full.community.common.exception.DuplicatedNicknameException;
@@ -219,6 +220,20 @@ class UserServiceUnitTest {
 
             assertThatThrownBy(() -> userService.updateAccount(1L, request))
                     .isInstanceOf(DuplicatedNicknameException.class);
+        }
+
+        @Test
+        void 닉네임이_이전과_동일하면_예외가_발생한다() {
+            // given
+            User user = UserFixture.createWithNickname("sameName");
+
+            given(userRepository.findById(1L)).willReturn(Optional.of(user));
+
+            // when & then
+            UserAccountUpdateRequest request = new UserAccountUpdateRequest("sameName", null);
+
+            assertThatThrownBy(() -> userService.updateAccount(1L, request))
+                    .isInstanceOf(CannotChangeSameNicknameException.class);
         }
     }
 

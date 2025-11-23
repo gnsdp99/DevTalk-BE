@@ -1,6 +1,7 @@
 package ktb3.full.community.service;
 
 import ktb3.full.community.common.config.JpaConfig;
+import ktb3.full.community.common.exception.CannotChangeSameNicknameException;
 import ktb3.full.community.common.exception.CannotChangeSamePasswordException;
 import ktb3.full.community.common.exception.DuplicatedEmailException;
 import ktb3.full.community.common.exception.DuplicatedNicknameException;
@@ -16,8 +17,6 @@ import ktb3.full.community.security.config.PasswordEncoderConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
@@ -28,7 +27,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @Import({ JpaConfig.class, PasswordEncoderConfig.class })
-@ExtendWith(MockitoExtension.class)
 @DataJpaTest
 class UserServiceTest {
 
@@ -225,6 +223,20 @@ class UserServiceTest {
 
             assertThatThrownBy(() -> userService.updateAccount(user.getId(), request))
                     .isInstanceOf(DuplicatedNicknameException.class);
+        }
+
+        @Test
+        void 닉네임이_이전과_동일하면_예외가_발생한다() {
+            // given
+            User user = UserFixture.createWithNickname("name");
+
+            userRepository.save(user);
+
+            // when & then
+            UserAccountUpdateRequest request = new UserAccountUpdateRequest("name", null);
+
+            assertThatThrownBy(() -> userService.updateAccount(user.getId(), request))
+                    .isInstanceOf(CannotChangeSameNicknameException.class);
         }
     }
 

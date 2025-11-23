@@ -55,6 +55,7 @@ public class UserService {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         if (request.getNickname() != null) {
+            validateIsNicknameChanged(user.getNickname(), request.getNickname());
             validateNicknameDuplication(request.getNickname());
             user.updateNickname(request.getNickname());
         }
@@ -87,6 +88,12 @@ public class UserService {
     private void validateIsPasswordChanged(String oldEncodedPassword, String newRawPassword) {
         if (passwordEncoder.matches(newRawPassword, oldEncodedPassword)) {
             throw new CannotChangeSamePasswordException();
+        }
+    }
+
+    private void validateIsNicknameChanged(String oldNickname, String newNickname) {
+        if (oldNickname.equals(newNickname)) {
+            throw new CannotChangeSameNicknameException();
         }
     }
 }
