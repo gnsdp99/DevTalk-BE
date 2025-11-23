@@ -4,6 +4,7 @@ import ktb3.full.community.common.exception.CannotChangeSameNicknameException;
 import ktb3.full.community.common.exception.CannotChangeSamePasswordException;
 import ktb3.full.community.common.exception.DuplicatedEmailException;
 import ktb3.full.community.common.exception.DuplicatedNicknameException;
+import ktb3.full.community.config.UnitTest;
 import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.dto.request.UserAccountUpdateRequest;
 import ktb3.full.community.dto.request.UserPasswordUpdateRequest;
@@ -14,10 +15,8 @@ import ktb3.full.community.fixture.UserFixture;
 import ktb3.full.community.repository.UserRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
-@ExtendWith(MockitoExtension.class)
+@UnitTest
 class UserServiceUnitTest {
 
     @Mock

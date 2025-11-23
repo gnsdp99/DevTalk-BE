@@ -1,5 +1,6 @@
 package ktb3.full.community.service;
 
+import ktb3.full.community.config.IntegrationTest;
 import ktb3.full.community.domain.entity.Comment;
 import ktb3.full.community.domain.entity.Post;
 import ktb3.full.community.domain.entity.User;
@@ -12,13 +13,12 @@ import ktb3.full.community.repository.UserRepository;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@IntegrationTest
 class UserDeleteServiceTest {
 
     @Autowired

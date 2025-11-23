@@ -1,6 +1,6 @@
 package ktb3.full.community.service;
 
-import ktb3.full.community.config.TestConfig;
+import ktb3.full.community.config.IntegrationTest;
 import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.dto.request.UserAccountUpdateRequest;
 import ktb3.full.community.dto.request.UserRegisterRequest;
@@ -11,8 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +19,7 @@ import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Import({TestConfig.class})
-@SpringBootTest
+@IntegrationTest
 public class UserServiceConcurrentTest {
 
     @Autowired
