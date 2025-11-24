@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 
 import static ktb3.full.community.common.Constants.MESSAGE_POST_CONTENT_PATTERN;
 
-@Pattern(regexp = "^(?=.*\\S).+$")
+@Pattern(regexp = "^(?s)(?=.*\\S)[\\s\\S]+$")
 @ReportAsSingleViolation
 @Documented
 @Constraint(validatedBy = { })
