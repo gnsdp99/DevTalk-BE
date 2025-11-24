@@ -16,11 +16,11 @@ public class PostDeleteService {
     private final PostRepository postRepository;
     private final CommentRepository commentRepository;
 
-    @PreAuthorize("@postRepository.findById(#postId).get().getUser().getId() == principal.userId")
+    @PreAuthorize("@postRepository.findByIdActive(#postId).get().getUser().getId() == principal.userId")
     @Transactional
     public void deletePost(long postId) {
         // soft delete
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Post post = postRepository.findByIdActive(postId).orElseThrow(PostNotFoundException::new);
         post.delete();
         commentRepository.deleteAllByPostId(postId);
     }

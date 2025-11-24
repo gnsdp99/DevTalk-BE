@@ -31,14 +31,14 @@ public class PostService {
     private final ImageUploadService imageUploadService;
 
     public PagedModel<PostResponse> getAllPosts(Pageable pageable) {
-        Page<Post> postPages = postRepository.findAll(pageable);
+        Page<Post> postPages = postRepository.findAllActive(pageable);
         return new PagedModel<>(postPages.map(PostResponse::from));
     }
 
     @Transactional
     public PostDetailResponse getPost(long userId, long postId) {
         postRepository.increaseViewCount(postId);
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Post post = postRepository.findByIdActive(postId).orElseThrow(PostNotFoundException::new);
         boolean isLiked = postLikeRepository.existsAndLiked(userId, postId).orElse(false);
         return PostDetailResponse.from(post, isLiked);
     }
@@ -54,10 +54,10 @@ public class PostService {
         return PostDetailResponse.from(post, false).getPostId();
     }
 
-    @PreAuthorize("@postRepository.findById(#postId).get().getUser().getId() == principal.userId")
+    @PreAuthorize("@postRepository.findByIdActive(#postId).get().getUser().getId() == principal.userId")
     @Transactional
     public void updatePost(long postId, PostUpdateRequest request) {
-        Post post = postRepository.findById(postId).orElseThrow(PostNotFoundException::new);
+        Post post = postRepository.findByIdActive(postId).orElseThrow(PostNotFoundException::new);
 
         if (request.getTitle() != null) {
             post.updateTitle(request.getTitle());

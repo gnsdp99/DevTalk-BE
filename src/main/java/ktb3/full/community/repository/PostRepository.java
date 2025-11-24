@@ -17,7 +17,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     @NonNull
     @Query(name = "Post.findByIdActive")
-    Optional<Post> findById(@NonNull @Param("id") Long id);
+    Optional<Post> findByIdActive(@NonNull @Param("id") Long id);
 
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query(name = "Post.findByIdActive")
@@ -30,7 +30,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     @NonNull
     @Query(value = "select p from Post p left join fetch p.user where p.isDeleted = false",
             countQuery = "select count(p) from Post p where p.isDeleted = false")
-    Page<Post> findAll(@NonNull Pageable pageable);
+    Page<Post> findAllActive(@NonNull Pageable pageable);
 
     @Modifying(flushAutomatically = true, clearAutomatically = true)
     @Query(value = "update Post p set p.user = null where p.user.id = :userId")
