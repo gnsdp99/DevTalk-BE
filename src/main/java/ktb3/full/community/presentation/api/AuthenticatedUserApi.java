@@ -12,6 +12,7 @@ import ktb3.full.community.dto.request.UserPasswordUpdateRequest;
 import ktb3.full.community.dto.response.ApiErrorResponse;
 import ktb3.full.community.dto.response.ApiSuccessResponse;
 import ktb3.full.community.dto.response.UserAccountResponse;
+import ktb3.full.community.dto.response.UserAccountUpdateResponse;
 import ktb3.full.community.security.userdetails.AuthUserDetails;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -37,7 +38,7 @@ public interface AuthenticatedUserApi {
             @ApiResponse(responseCode = "401", description = "인증 필요",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<ApiSuccessResponse<Void>> updateUserAccount(
+    ResponseEntity<ApiSuccessResponse<UserAccountUpdateResponse>> updateUserAccount(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest);
 

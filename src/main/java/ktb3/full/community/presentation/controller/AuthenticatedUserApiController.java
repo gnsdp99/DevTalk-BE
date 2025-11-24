@@ -1,6 +1,7 @@
 package ktb3.full.community.presentation.controller;
 
 import jakarta.validation.Valid;
+import ktb3.full.community.dto.response.UserAccountUpdateResponse;
 import ktb3.full.community.security.userdetails.AuthUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import ktb3.full.community.dto.request.UserAccountUpdateRequest;
@@ -30,12 +31,12 @@ public class AuthenticatedUserApiController implements AuthenticatedUserApi {
     }
 
     @PatchMapping
-    public ResponseEntity<ApiSuccessResponse<Void>> updateUserAccount(
+    public ResponseEntity<ApiSuccessResponse<UserAccountUpdateResponse>> updateUserAccount(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest) {
-        userService.updateAccount(userDetails.getUserId(), userAccountUpdateRequest);
+        UserAccountUpdateResponse response = userService.updateAccount(userDetails.getUserId(), userAccountUpdateRequest);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiSuccessResponse.of(response));
     }
 
     @PatchMapping("/password")

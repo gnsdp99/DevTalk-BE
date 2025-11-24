@@ -5,6 +5,7 @@ import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.dto.request.UserAccountUpdateRequest;
 import ktb3.full.community.dto.request.UserPasswordUpdateRequest;
 import ktb3.full.community.dto.request.UserRegisterRequest;
+import ktb3.full.community.dto.response.UserAccountUpdateResponse;
 import ktb3.full.community.dto.response.UserProfileResponse;
 import ktb3.full.community.dto.response.UserValidationResponse;
 import ktb3.full.community.dto.response.UserAccountResponse;
@@ -51,7 +52,7 @@ public class UserService {
     }
 
     @Transactional
-    public void updateAccount(long userId, UserAccountUpdateRequest request) {
+    public UserAccountUpdateResponse updateAccount(long userId, UserAccountUpdateRequest request) {
         User user = userRepository.findById(userId).orElseThrow(UserNotFoundException::new);
 
         if (request.getNickname() != null) {
@@ -64,6 +65,8 @@ public class UserService {
             String profileImageName = imageUploadService.saveImageAndGetName(request.getProfileImage());
             user.updateProfileImageName(profileImageName);
         }
+
+        return UserAccountUpdateResponse.from(user);
     }
 
     @Transactional
