@@ -19,6 +19,10 @@ public class AuthUserDetailsService implements UserDetailsService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException(email));
 
+        if (user.isDeleted()) {
+            throw new UsernameNotFoundException(email);
+        }
+
         return AuthUserDetails.builder()
                 .userId(user.getId())
                 .username(user.getEmail())
