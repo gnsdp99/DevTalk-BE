@@ -1,54 +1,36 @@
-## SOLID 원칙 기반 리팩토링
+# DevTalk - 개발자 지식 공유 커뮤니티 서비스 (2025.09.22 ~ )
 
-### 리팩토링 대상: `MemberRepository` 클래스
+## 프로젝트 소개
 
-### 리팩토링 이유:
+DevTalk은 개발자들이 편하게 질문하고 답할 수 있는 커뮤니티 서비스입니다.
 
-- `Repository` 계층은 데이터 저장소로부터 도메인 객체의 CRUD를 수행하는 책임만 가져야 합니다.
+## 인원
 
+1명 (개인 프로젝트)
 
-- 현재 `MemberRepository` 구현체는 테이블 관리, 식별자 생성, 동시성 제어, 페이징 처리 등 다양한 책임을 가지고 있어 이를 분리해야 한다고 판단했습니다.
+## 주요 기능
 
+- 회원가입/로그인: 세션 기반 인증, CSRF 보호
+- 회원탈퇴: 작성한 게시글 및 댓글 익명화
+- 게시글 목록 조회: 무한 스크롤링
+- 게시글 작성 / 수정 / 삭제
+- 게시글 좋아요
+- 댓글 목록 조회: 페이지네이션
+- 댓글 작성 / 수정 / 삭제
 
-- 특히 `MemberRepository` 클래스에서 페이징 및 정렬 로직을 직접 처리하고 있어, 정렬 기준이 추가될 때마다 해당 클래스를 수정해야 하고, 페이징과 정렬 로직의 수정이 서로 영향을 미치고 있습니다.
+## 기술 스택
 
-### 리팩토링 과정:
+<table >
+    <tr>
+        <td>Backend</td>
+        <td>Java 21, Spring Boot 3.5.6, Spring Data JPA 3.5.4, Spring Security 6.5.5</td>
+    </tr>
+    <tr>
+        <td>Database</td>
+        <td>MySQL 9.4.0, H2 DB 2.3.232</td>
+    </tr>
+</table>
 
-#### 페이징 및 정렬 로직 책임 분리
+## ERD
 
-- 페이징 로직만 담당하는 `PageUtil` 클래스와 정렬 로직만 담당하는 `SortUtil` 클래스로 책임을 분리했습니다.
-
-
-- `SortUtil`에서는 Reflection API를 활용해 도메인 객체에서 클라이언트가 넘긴 정렬 기준에 해당하는 필드를 찾고, 이를 기준으로 하는 `Comparator` 객체를 생성합니다.
-
-
-- `PageUtil`에서는 정렬된 도메인 객체의 리스트를 파라미터로 받아 클라이언트가 넘긴 페이지 번호와 크기를 바탕으로 페이징 처리합니다.
-
-#### 테이블 및 식별자 관리 책임 분리
-
-- Infrastructure 계층을 추가해 DB에 해당하는 테이블 및 식별자를 관리하도록 책임을 분리했습니다. 테이블 관리만 담당하는 `Table` 클래스와 식별자 관리만 담당하는 `IdentifierGenerator` 클래스로 분리했습니다.
-
-
-- 게시글 별 댓글 리스트 관리 책임은 `PostTable`과 `CommentTable` 모두 적절하지 않다고 생각해 `PostCommentConnector` 클래스로 분리했습니다. (게시글이 생성, 삭제될 때마다 `Map`의 key가 추가, 삭제되고, 댓글이 생성, 삭제될 때마다 Map의 value가 추가, 삭제되어야 하기 때문)
-
-
-#### 동시성 제어 및 auditing 책임 분리
-
-- 동시성 제어 책임과 auditing(엔티티의 저장, 수정 시간 관리 등) 또한 DB의 몫이라고 생각해 `Table` 클래스로 분리했습니다.
-
-### 리팩토링 성과: 
-
-#### `MemberRepository` 및 파생 클래스의 SRP 원칙 준수
-
-- 이제 `MemberRepository`는 데이터 저장소를 직접 관리하지 않고 `Table`로부터 데이터에 대한 CRUD만 책임지면 됩니다.
-
-
-- `MemberRepository`의 책임을 분리하는 과정에서 파생된 클래스들(테이블 관리(`Table`), 식별자 관리(`IdentifierGenerator`), 정렬 로직(`SortUtil`), 페이징 로직(`PageUtil`))도 SRP 원칙을 준수하도록 개선했습니다.
-
-#### 정렬 기능의 OCP 원칙 준수
-
-- 정렬 기준에 따른 정렬 기능을 추가하기 위해 기존 코드를 수정할 필요가 없습니다. 도메인 객체의 필드에 해당하기만 하면 됩니다. 
-
-#### 동시성 문제 해결을 위한 lock 범위 축소
-
-- `CommentMemoryRepository`에서 게시글 별 댓글 저장소를 관리함으로써 불필요하게 lock의 범위가 넓어졌습니다. 이 책임을 `PostCommentConnector`로 분리함으로써 게시글이 생성, 삭제 될 때는 lock을 점유하지 않도록 개선했습니다.
+<img width="1663" height="660" alt="ERD" src="https://github.com/user-attachments/assets/acc9b63b-4076-4ca5-bbaf-d888305ed396" />
