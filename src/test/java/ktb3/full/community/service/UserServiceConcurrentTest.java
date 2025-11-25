@@ -1,16 +1,20 @@
 package ktb3.full.community.service;
 
-import ktb3.full.community.config.IntegrationTest;
+import ktb3.full.community.config.ImageUploadServiceStubConfig;
+import ktb3.full.community.config.JpaTest;
 import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.dto.request.UserAccountUpdateRequest;
 import ktb3.full.community.dto.request.UserRegisterRequest;
 import ktb3.full.community.fixture.MultipartFileFixture;
 import ktb3.full.community.fixture.UserFixture;
 import ktb3.full.community.repository.UserRepository;
+import ktb3.full.community.security.config.PasswordEncoderConfig;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.RepeatedTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +22,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.transaction.annotation.Propagation.NOT_SUPPORTED;
 
-@IntegrationTest
+@Import({UserService.class, ImageUploadServiceStubConfig.class, PasswordEncoderConfig.class})
+@JpaTest
 public class UserServiceConcurrentTest {
 
     @Autowired
@@ -78,6 +84,7 @@ public class UserServiceConcurrentTest {
     @Nested
     class updateAccount {
 
+        @Transactional(propagation = NOT_SUPPORTED)
         @RepeatedTest(value = 5)
         void 동시에_동일한_닉네임으로_변경하면_한_명만_성공한다() {
             // given

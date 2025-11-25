@@ -10,7 +10,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @AutoConfigureMockMvc
-@Import({TestConfig.class})
 @SpringBootTest
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

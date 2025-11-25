@@ -1,6 +1,6 @@
 package ktb3.full.community.service;
 
-import ktb3.full.community.config.IntegrationTest;
+import ktb3.full.community.config.JpaTest;
 import ktb3.full.community.domain.entity.Comment;
 import ktb3.full.community.domain.entity.Post;
 import ktb3.full.community.domain.entity.User;
@@ -14,12 +14,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@IntegrationTest
+@Import({UserDeleteService.class})
+@JpaTest
 class UserDeleteServiceTest {
 
     @Autowired
