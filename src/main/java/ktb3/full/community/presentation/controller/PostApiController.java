@@ -2,14 +2,11 @@ package ktb3.full.community.presentation.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
+import ktb3.full.community.dto.response.*;
 import ktb3.full.community.security.userdetails.AuthUserDetails;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import ktb3.full.community.dto.request.PostCreateRequest;
 import ktb3.full.community.dto.request.PostUpdateRequest;
-import ktb3.full.community.dto.response.ApiSuccessResponse;
-import ktb3.full.community.dto.response.PostDetailResponse;
-import ktb3.full.community.dto.response.PostLikeRespnose;
-import ktb3.full.community.dto.response.PostResponse;
 import ktb3.full.community.presentation.api.PostApi;
 import ktb3.full.community.service.PostDeleteService;
 import ktb3.full.community.service.PostLikeService;
@@ -77,11 +74,11 @@ public class PostApiController implements PostApi {
     }
 
     @PatchMapping("/{postId}/like")
-    public ResponseEntity<ApiSuccessResponse<PostLikeRespnose>> likePost(
+    public ResponseEntity<ApiSuccessResponse<Void>> likePost(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId) {
-        PostLikeRespnose postLikeRespnose = postLikeService.createOrUpdate(userDetails.getUserId(), postId);
+        postLikeService.createOrUpdate(userDetails.getUserId(), postId);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(postLikeRespnose));
+                .body(ApiSuccessResponse.getBaseResponse());
     }
 }

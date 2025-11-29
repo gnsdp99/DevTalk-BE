@@ -27,7 +27,7 @@ public class UserAccountResponse {
 
     @Schema(description = "생성일", example = "2025-10-14 22:16:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private final LocalDateTime createdAt;
+    private final LocalDateTime createdDate;
 
     public static UserAccountResponse from(User user) {
         return new UserAccountResponse(user.getId(), user.getEmail(), user.getNickname(), user.getProfileImageName(), user.getCreatedAt());

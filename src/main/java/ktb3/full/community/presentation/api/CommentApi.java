@@ -52,7 +52,7 @@ public interface CommentApi {
             @ApiResponse(responseCode = "401", description = "인증 필요",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class))),
     })
-    ResponseEntity<ApiSuccessResponse<Void>> createComment(
+    ResponseEntity<ApiSuccessResponse<CommentResponse>> createComment(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") @Parameter(description = "게시글 ID") long postId,
             @Valid @RequestBody CommentCreateRequest request);

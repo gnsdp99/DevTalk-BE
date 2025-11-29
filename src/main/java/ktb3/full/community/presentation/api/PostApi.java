@@ -92,7 +92,7 @@ public interface PostApi {
             @ApiResponse(responseCode = "404", description = "게시글을 찾을 수 없음",
                     content = @Content(schema = @Schema(implementation = ApiErrorResponse.class)))
     })
-    ResponseEntity<ApiSuccessResponse<PostLikeRespnose>> likePost(
+    ResponseEntity<ApiSuccessResponse<Void>> likePost(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") @Parameter(description = "게시글 ID") long postId);
 }

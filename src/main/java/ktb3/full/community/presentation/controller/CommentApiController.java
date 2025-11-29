@@ -43,13 +43,13 @@ public class CommentApiController implements CommentApi {
     }
 
     @PostMapping("/posts/{postId}/comments")
-    public ResponseEntity<ApiSuccessResponse<Void>> createComment(
+    public ResponseEntity<ApiSuccessResponse<CommentResponse>> createComment(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId,
             @Valid @RequestBody CommentCreateRequest request) {
-        long commentId = commentService.createComment(userDetails.getUserId(), postId, request);
-        return ResponseEntity.created(URI.create(String.format("/comments/%d", commentId)))
-                .body(ApiSuccessResponse.getBaseResponse());
+        CommentResponse response = commentService.createComment(userDetails.getUserId(), postId, request);
+        return ResponseEntity.created(URI.create(String.format("/comments/%d", response.getCommentId())))
+                .body(ApiSuccessResponse.of(response));
     }
 
     @PatchMapping("/comments/{commentId}")

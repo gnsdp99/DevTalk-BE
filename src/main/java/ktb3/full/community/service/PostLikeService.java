@@ -5,7 +5,6 @@ import ktb3.full.community.common.exception.UserNotFoundException;
 import ktb3.full.community.domain.entity.Post;
 import ktb3.full.community.domain.entity.PostLike;
 import ktb3.full.community.domain.entity.User;
-import ktb3.full.community.dto.response.PostLikeRespnose;
 import ktb3.full.community.repository.PostLikeRepository;
 import ktb3.full.community.repository.PostRepository;
 import ktb3.full.community.repository.UserRepository;
@@ -23,7 +22,7 @@ public class PostLikeService {
     private final PostRepository postRepository;
 
     @Transactional
-    public PostLikeRespnose createOrUpdate(long userId, long postId) {
+    public void createOrUpdate(long userId, long postId) {
         Post post = postRepository.findByIdForUpdate(postId).orElseThrow(PostNotFoundException::new);
 
         PostLike postLike = postLikeRepository.findByUserIdAndPostId(userId, postId)
@@ -33,7 +32,5 @@ public class PostLikeService {
                 });
 
         postLike.toggle();
-
-        return new PostLikeRespnose(postLike.isLiked(), post.getLikeCount());
     }
 }

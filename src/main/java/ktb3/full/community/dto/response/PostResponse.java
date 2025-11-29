@@ -25,11 +25,17 @@ public class PostResponse {
     @Schema(description = "내용", example = "테스트 게시글입니다.")
     private final String content;
 
+    @Schema(description = "작성자 ID", example = "1")
+    private final Long authorId;
+
     @Schema(description = "작성자 닉네임", example = "testNick")
     private final String authorNickname;
 
     @Schema(description = "작성자 프로필", example = "https://test.kr/test.jpg")
     private final String authorProfileImageName;
+
+    @Schema(description = "이미지 경로", example = "https://test.kr/test.jpg")
+    private final String imageName;
 
     @Schema(description = "작성일", example = "2025-10-14 22:16:00")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -49,8 +55,10 @@ public class PostResponse {
                 .postId(post.getId())
                 .title(post.getTitle())
                 .content(post.getContent())
+                .authorId(AccountValidator.getUserId(post.getUser()))
                 .authorNickname(AccountValidator.getAuthorName(post.getUser()))
                 .authorProfileImageName(AccountValidator.getAuthorProfileImageName(post.getUser()))
+                .imageName(post.getImageName())
                 .createdDate(post.getCreatedAt())
                 .likeCount(post.getLikeCount())
                 .commentCount(post.getCommentCount())
