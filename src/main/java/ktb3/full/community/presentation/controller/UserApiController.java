@@ -6,12 +6,15 @@ import ktb3.full.community.common.annotation.constraint.EmailPattern;
 import ktb3.full.community.common.annotation.constraint.NicknamePattern;
 import ktb3.full.community.dto.request.UserRegisterRequest;
 import ktb3.full.community.dto.response.ApiSuccessResponse;
+import ktb3.full.community.dto.response.UserLoginCheckResponse;
 import ktb3.full.community.dto.response.UserProfileResponse;
 import ktb3.full.community.dto.response.UserValidationResponse;
 import ktb3.full.community.presentation.api.UserApi;
+import ktb3.full.community.security.userdetails.AuthUserDetails;
 import ktb3.full.community.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -51,5 +54,17 @@ public class UserApiController implements UserApi {
         UserProfileResponse userProfile = userService.getUserProfile(userId);
         return ResponseEntity.ok()
                 .body(ApiSuccessResponse.of(userProfile));
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<ApiSuccessResponse<UserLoginCheckResponse>> checkLogin(Authentication authentication) {
+        Long userId = null;
+        if (authentication != null && authentication.isAuthenticated()) {
+            AuthUserDetails principal = (AuthUserDetails) authentication.getPrincipal();
+            userId = principal.getUserId();
+
+        }
+        return ResponseEntity.ok()
+                .body(ApiSuccessResponse.of(new UserLoginCheckResponse(userId)));
     }
 }

@@ -14,6 +14,8 @@ import ktb3.full.community.common.annotation.constraint.NicknamePattern;
 import ktb3.full.community.dto.request.UserRegisterRequest;
 import ktb3.full.community.dto.response.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -58,4 +60,11 @@ public interface UserApi {
     })
     ResponseEntity<ApiSuccessResponse<UserProfileResponse>> getUserProfile(
             @Positive @PathVariable("userId") @Parameter(description = "회원 ID") long userId);
+
+    @Operation(summary = "로그인 여부 조회", description = "회원의 로그인 여부를 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "조회 성공")
+    })
+    @GetMapping("/check")
+    ResponseEntity<ApiSuccessResponse<UserLoginCheckResponse>> checkLogin(Authentication authentication);
 }

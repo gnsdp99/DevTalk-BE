@@ -28,7 +28,8 @@ public abstract class Constants {
     public static final String[] WHITE_LIST = {
             "/users/email-validation",
             "/users/nickname-validation",
-            "/images/**"
+            "/users/check",
+            "/images/**",
     };
 
     public static final String REGISTER = "/users";
