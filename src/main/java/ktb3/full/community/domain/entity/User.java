@@ -25,7 +25,7 @@ public class User extends AuditTime {
     @Column(name = "nickname", nullable = false, unique = true, length = 10)
     private String nickname;
 
-    @Column(name = "profile_image_name", nullable = false, unique = true, length = 255)
+    @Column(name = "profile_image_name", unique = true, length = 255)
     private String profileImageName;
 
     @Column(name = "is_deleted", nullable = false)
