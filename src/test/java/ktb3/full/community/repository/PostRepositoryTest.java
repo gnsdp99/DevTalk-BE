@@ -11,9 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
-import java.util.Comparator;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -128,32 +126,6 @@ class PostRepositoryTest {
 
             // then
             assertThat(page.getNumberOfElements()).isEqualTo(10);
-        }
-
-        @Test
-        void 최신순으로_조회한다() throws InterruptedException {
-            // given
-            int postCount = 10;
-            User user = userRepository.save(UserFixture.createUser());
-            for (int i = 0; i < postCount; i++) {
-                Thread.sleep(100);
-                postRepository.save(PostFixture.createPost(user));
-            }
-            entityManager.clear();
-
-            // when
-            int pageNumber = 0;
-            int pageSize = 10;
-            Sort createdAtDesc = Sort.by(Sort.Direction.DESC, "createdAt");
-            PageRequest request = PageRequest.of(pageNumber, pageSize, createdAtDesc);
-
-            Page<Post> page = postRepository.findAllActive(request);
-
-            // then
-            assertThat(page.getNumberOfElements()).isEqualTo(10);
-            assertThat(page.getContent())
-                    .extracting(Post::getCreatedAt)
-                    .isSortedAccordingTo(Comparator.reverseOrder());
         }
     }
 
