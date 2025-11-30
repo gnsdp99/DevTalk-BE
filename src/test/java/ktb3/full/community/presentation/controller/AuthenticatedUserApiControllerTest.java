@@ -73,7 +73,7 @@ class AuthenticatedUserApiControllerTest {
                     .andExpect(jsonPath("$.data.email").value("email@example.com"))
                     .andExpect(jsonPath("$.data.nickname").value("name"))
                     .andExpect(jsonPath("$.data.profileImageName").value("profileImageName"))
-                    .andExpect(jsonPath("$.data.createdAt").value("2025-11-23 00:00:00"));
+                    .andExpect(jsonPath("$.data.createdDate").value("2025-11-23 00:00:00"));
         }
     }
 
