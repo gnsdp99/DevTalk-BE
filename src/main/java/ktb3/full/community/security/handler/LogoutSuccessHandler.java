@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ktb3.full.community.dto.response.ApiSuccessResponse;
+import ktb3.full.community.dto.response.ApiResponse;
 import ktb3.full.community.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -23,6 +23,6 @@ public class LogoutSuccessHandler implements org.springframework.security.web.au
         ResponseUtil.responseJsonUtf8(
                 response,
                 HttpServletResponse.SC_OK,
-                objectMapper.writeValueAsString(ApiSuccessResponse.getBaseResponse()));
+                objectMapper.writeValueAsString(ApiResponse.success()));
     }
 }

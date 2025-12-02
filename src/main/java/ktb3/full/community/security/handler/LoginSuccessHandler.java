@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import ktb3.full.community.dto.response.ApiSuccessResponse;
+import ktb3.full.community.dto.response.ApiResponse;
 import ktb3.full.community.dto.response.UserLoginResponse;
 import ktb3.full.community.security.userdetails.AuthUserDetails;
 import ktb3.full.community.util.ResponseUtil;
@@ -35,7 +35,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .userId(principal.getUserId())
                 .profileImageName(principal.getProfileImageName())
                 .build();
-        ApiSuccessResponse<UserLoginResponse> apiResponse = ApiSuccessResponse.of(userLoginResponse);
+        ApiResponse<UserLoginResponse> apiResponse = ApiResponse.success(userLoginResponse);
 
         ResponseUtil.responseJsonUtf8(
                 response,

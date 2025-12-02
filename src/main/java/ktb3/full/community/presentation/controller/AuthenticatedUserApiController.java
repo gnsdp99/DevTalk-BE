@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import ktb3.full.community.dto.request.UserAccountUpdateRequest;
 import ktb3.full.community.dto.request.UserPasswordUpdateRequest;
-import ktb3.full.community.dto.response.ApiSuccessResponse;
+import ktb3.full.community.dto.response.ApiResponse;
 import ktb3.full.community.dto.response.UserAccountResponse;
 import ktb3.full.community.presentation.api.AuthenticatedUserApi;
 import ktb3.full.community.service.UserDeleteService;
@@ -28,32 +28,32 @@ public class AuthenticatedUserApiController implements AuthenticatedUserApi {
     private final UserDeleteService userDeleteService;
 
     @GetMapping
-    public ResponseEntity<ApiSuccessResponse<UserAccountResponse>> getUserAccount(@AuthenticationPrincipal AuthUserDetails userDetails) {
+    public ResponseEntity<ApiResponse<UserAccountResponse>> getUserAccount(@AuthenticationPrincipal AuthUserDetails userDetails) {
         UserAccountResponse userAccountResponse = userService.getUserAccount(userDetails.getUserId());
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(userAccountResponse));
+                .body(ApiResponse.success(userAccountResponse));
     }
 
     @PatchMapping
-    public ResponseEntity<ApiSuccessResponse<UserAccountUpdateResponse>> updateUserAccount(
+    public ResponseEntity<ApiResponse<UserAccountUpdateResponse>> updateUserAccount(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute UserAccountUpdateRequest userAccountUpdateRequest) {
         UserAccountUpdateResponse response = userService.updateAccount(userDetails.getUserId(), userAccountUpdateRequest);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(response));
+                .body(ApiResponse.success(response));
     }
 
     @PatchMapping("/password")
-    public ResponseEntity<ApiSuccessResponse<Void>> updatePassword(
+    public ResponseEntity<ApiResponse<Void>> updatePassword(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @RequestBody UserPasswordUpdateRequest userPasswordUpdateRequest) {
         userService.updatePassword(userDetails.getUserId(), userPasswordUpdateRequest);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 
     @DeleteMapping
-    public ResponseEntity<ApiSuccessResponse<Void>> deleteUserAccount(
+    public ResponseEntity<ApiResponse<Void>> deleteUserAccount(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             HttpServletRequest request,
             HttpServletResponse response,
@@ -62,6 +62,6 @@ public class AuthenticatedUserApiController implements AuthenticatedUserApi {
         userDeleteService.deleteAccount(userDetails.getUserId());
         new SecurityContextLogoutHandler().logout(request, response, authentication);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 }

@@ -5,10 +5,7 @@ import jakarta.validation.constraints.Positive;
 import ktb3.full.community.common.annotation.constraint.EmailPattern;
 import ktb3.full.community.common.annotation.constraint.NicknamePattern;
 import ktb3.full.community.dto.request.UserRegisterRequest;
-import ktb3.full.community.dto.response.ApiSuccessResponse;
-import ktb3.full.community.dto.response.UserLoginCheckResponse;
-import ktb3.full.community.dto.response.UserProfileResponse;
-import ktb3.full.community.dto.response.UserValidationResponse;
+import ktb3.full.community.dto.response.*;
 import ktb3.full.community.presentation.api.UserApi;
 import ktb3.full.community.security.userdetails.AuthUserDetails;
 import ktb3.full.community.service.UserService;
@@ -29,35 +26,35 @@ public class UserApiController implements UserApi {
     private final UserService userService;
 
     @GetMapping("/email-validation")
-    public ResponseEntity<ApiSuccessResponse<UserValidationResponse>> validateEmailAvailable(@EmailPattern @RequestParam("email") String email) {
+    public ResponseEntity<ApiResponse<UserValidationResponse>> validateEmailAvailable(@EmailPattern @RequestParam("email") String email) {
         UserValidationResponse userValidationResponse = userService.validateEmailAvailable(email);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(userValidationResponse));
+                .body(ApiResponse.success(userValidationResponse));
     }
 
     @GetMapping("/nickname-validation")
-    public ResponseEntity<ApiSuccessResponse<UserValidationResponse>> validateNicknameAvailable(@NicknamePattern @RequestParam("nickname") String nickname) {
+    public ResponseEntity<ApiResponse<UserValidationResponse>> validateNicknameAvailable(@NicknamePattern @RequestParam("nickname") String nickname) {
         UserValidationResponse userValidationResponse = userService.validateNicknameAvailable(nickname);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(userValidationResponse));
+                .body(ApiResponse.success(userValidationResponse));
     }
 
     @PostMapping
-    public ResponseEntity<ApiSuccessResponse<Void>> signUp(@Valid @ModelAttribute UserRegisterRequest userRegisterRequest) {
+    public ResponseEntity<ApiResponse<Void>> signUp(@Valid @ModelAttribute UserRegisterRequest userRegisterRequest) {
         long userId = userService.register(userRegisterRequest);
         return ResponseEntity.created(URI.create(String.format("/users/%d", userId)))
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<ApiSuccessResponse<UserProfileResponse>> getUserProfile(@Positive @PathVariable("userId") long userId) {
+    public ResponseEntity<ApiResponse<UserProfileResponse>> getUserProfile(@Positive @PathVariable("userId") long userId) {
         UserProfileResponse userProfile = userService.getUserProfile(userId);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(userProfile));
+                .body(ApiResponse.success(userProfile));
     }
 
     @GetMapping("/check")
-    public ResponseEntity<ApiSuccessResponse<UserLoginCheckResponse>> checkLogin(Authentication authentication) {
+    public ResponseEntity<ApiResponse<UserLoginCheckResponse>> checkLogin(Authentication authentication) {
         Long userId = null;
         if (authentication != null && authentication.isAuthenticated()) {
             AuthUserDetails principal = (AuthUserDetails) authentication.getPrincipal();
@@ -65,6 +62,6 @@ public class UserApiController implements UserApi {
 
         }
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(new UserLoginCheckResponse(userId)));
+                .body(ApiResponse.success(new UserLoginCheckResponse(userId)));
     }
 }

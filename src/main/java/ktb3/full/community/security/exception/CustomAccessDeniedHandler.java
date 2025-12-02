@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ktb3.full.community.common.exception.NoPermissionException;
-import ktb3.full.community.dto.response.ApiErrorResponse;
+import ktb3.full.community.dto.response.ApiResponse;
 import ktb3.full.community.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
         log.warn("AccessDeniedException: {}", accessDeniedException.getMessage());
 
         NoPermissionException exception = new NoPermissionException();
-        ApiErrorResponse apiResponse = ApiErrorResponse.of(exception.getApiErrorCode(), request.getRequestURI());
+        ApiResponse<Void> apiResponse = ApiResponse.error(exception.getApiErrorCode());
 
         ResponseUtil.responseJsonUtf8(
                 response,

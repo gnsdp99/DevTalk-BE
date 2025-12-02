@@ -31,54 +31,54 @@ public class PostApiController implements PostApi {
     private final PostLikeService postLikeService;
 
     @GetMapping
-    public ResponseEntity<ApiSuccessResponse<PagedModel<PostResponse>>> getAllPosts(@Valid Pageable pageable) {
+    public ResponseEntity<ApiResponse<PagedModel<PostResponse>>> getAllPosts(@Valid Pageable pageable) {
         PagedModel<PostResponse> response = postService.getAllPosts(pageable);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(response));
+                .body(ApiResponse.success(response));
     }
 
     @GetMapping("/{postId}")
-    public ResponseEntity<ApiSuccessResponse<PostDetailResponse>> getPostDetail(
+    public ResponseEntity<ApiResponse<PostDetailResponse>> getPostDetail(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId) {
         PostDetailResponse response = postService.getPost(userDetails.getUserId(), postId);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.of(response));
+                .body(ApiResponse.success(response));
     }
 
     @PostMapping
-    public ResponseEntity<ApiSuccessResponse<Void>> createPost(
+    public ResponseEntity<ApiResponse<Void>> createPost(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Valid @ModelAttribute PostCreateRequest request
     ) {
         long postId = postService.createPost(userDetails.getUserId(), request);
         return ResponseEntity.created(URI.create(String.format("/posts/%d", postId)))
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 
     @PatchMapping("/{postId}")
-    public ResponseEntity<ApiSuccessResponse<Void>> updatePost(
+    public ResponseEntity<ApiResponse<Void>> updatePost(
             @Positive @PathVariable("postId") long postId,
             @Valid @ModelAttribute PostUpdateRequest request) {
         postService.updatePost(postId, request);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 
     @DeleteMapping("/{postId}")
-    public ResponseEntity<ApiSuccessResponse<Void>> deletePost(
+    public ResponseEntity<ApiResponse<Void>> deletePost(
             @Positive @PathVariable("postId") long postId) {
         postDeleteService.deletePost(postId);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 
     @PatchMapping("/{postId}/like")
-    public ResponseEntity<ApiSuccessResponse<Void>> likePost(
+    public ResponseEntity<ApiResponse<Void>> likePost(
             @AuthenticationPrincipal AuthUserDetails userDetails,
             @Positive @PathVariable("postId") long postId) {
         postLikeService.createOrUpdate(userDetails.getUserId(), postId);
         return ResponseEntity.ok()
-                .body(ApiSuccessResponse.getBaseResponse());
+                .body(ApiResponse.success());
     }
 }
