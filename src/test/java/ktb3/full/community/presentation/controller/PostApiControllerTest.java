@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -92,7 +93,7 @@ class PostApiControllerTest extends ControllerTestSupport {
             resultActions
                     .andDo(print())
                     .andExpect(status().isCreated())
-                    .andExpect(header().exists("Location"))
+                    .andExpect(header().exists(HttpHeaders.LOCATION))
                     .andExpect(jsonPath("$.code").isEmpty())
                     .andExpect(jsonPath("$.message").value("요청에 성공했습니다."))
                     .andExpect(jsonPath("$.data").isEmpty());
