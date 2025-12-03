@@ -7,6 +7,10 @@ public class ImageUploadServiceStub extends ImageUploadService {
 
     @Override
     public String saveImageAndGetName(MultipartFile image) {
-        return image.getName();
+        if (image == null) {
+            return null;
+        }
+
+        return "/images/" + image.getOriginalFilename();
     }
 }

@@ -1,14 +1,13 @@
 package ktb3.full.community;
 
-import ktb3.full.community.service.ImageUploadService;
+import ktb3.full.community.config.ImageUploadServiceStubConfig;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
+@Import({ImageUploadServiceStubConfig.class})
 @ActiveProfiles("test")
 @SpringBootTest
 public abstract class IntegrationTestSupport {
 
-    @MockitoBean
-    protected ImageUploadService imageUploadService;
 }

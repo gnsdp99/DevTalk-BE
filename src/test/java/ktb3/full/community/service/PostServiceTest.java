@@ -18,7 +18,6 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.jdbc.Sql;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 
 @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD, scripts = {"classpath:sql/truncate.sql"})
 public class PostServiceTest extends IntegrationTestSupport {
@@ -40,8 +39,6 @@ public class PostServiceTest extends IntegrationTestSupport {
             // given
             User user = userRepository.save(UserFixture.createUser());
             MockMultipartFile image = MultipartFileFixture.createWithOriginName("image.png");
-
-            given(imageUploadService.saveImageAndGetName(image)).willReturn("/images/image.png");
 
             PostCreateRequest request = PostCreateRequest.builder()
                     .title("title")
@@ -93,8 +90,6 @@ public class PostServiceTest extends IntegrationTestSupport {
             User user = userRepository.save(UserFixture.createUser());
             Post post = postRepository.save(PostFixture.createPost(user));
             MockMultipartFile updatedImage = MultipartFileFixture.createWithOriginName("updatedImage.png");
-
-            given(imageUploadService.saveImageAndGetName(updatedImage)).willReturn("/images/updatedImage.png");
 
             PostUpdateRequest request = PostUpdateRequest.builder()
                     .title("updated title")
@@ -168,8 +163,6 @@ public class PostServiceTest extends IntegrationTestSupport {
             User user = userRepository.save(UserFixture.createUser());
             Post post = postRepository.save(PostFixture.createForUpdate(user, "title", "content", "originImage.png", "/images/originImage.png"));
             MockMultipartFile updatedImage = MultipartFileFixture.createWithOriginName("updatedImage.png");
-
-            given(imageUploadService.saveImageAndGetName(updatedImage)).willReturn("/images/updatedImage.png");
 
             PostUpdateRequest request = PostUpdateRequest.builder()
                     .title(null)
