@@ -13,7 +13,6 @@ import ktb3.full.community.dto.response.UserAccountUpdateResponse;
 import ktb3.full.community.fixture.MultipartFileFixture;
 import ktb3.full.community.fixture.UserFixture;
 import ktb3.full.community.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +32,6 @@ public class UserServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAllInBatch();
-    }
 
     @Nested
     class register {

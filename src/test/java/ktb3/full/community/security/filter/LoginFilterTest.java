@@ -6,7 +6,6 @@ import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.dto.request.UserLoginRequest;
 import ktb3.full.community.fixture.UserFixture;
 import ktb3.full.community.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +32,6 @@ class LoginFilterTest extends IntegrationTestSupport {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAll();
-    }
 
     @Nested
     class login {

@@ -3,7 +3,6 @@ package ktb3.full.community.security.userdetails;
 import ktb3.full.community.IntegrationTestSupport;
 import ktb3.full.community.fixture.UserFixture;
 import ktb3.full.community.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +18,6 @@ class AuthUserDetailsServiceTest extends IntegrationTestSupport {
 
     @Autowired
     private AuthUserDetailsService sut;
-
-    @AfterEach
-    void tearDown() {
-        userRepository.deleteAllInBatch();
-    }
 
     @Nested
     class loadUserByUsername {
