@@ -23,6 +23,10 @@ public class PostFixture {
                 .build();
     }
 
+    public static Post createPost() {
+        return createPost(null, null, null, null, null, 0, 0, 0, false);
+    }
+
     public static Post createPost(User user) {
         return createPost(user, null, null, null, null, 0, 0, 0, false);
     }
@@ -45,6 +49,10 @@ public class PostFixture {
 
     public static List<Post> createWithoutUserPosts(int count) {
         return createPosts(count, PostFixture::createWithoutUser);
+    }
+
+    public static Post createWithLikeCount(int likeCount) {
+        return createPost(null, null, null, null, null, 0, 0, likeCount, false);
     }
 
     public static Post createWithLikeCount(User user, int likeCount) {
