@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import ktb3.full.community.domain.entity.Comment;
 import ktb3.full.community.domain.entity.Post;
 import ktb3.full.community.domain.entity.User;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,6 +13,7 @@ import static ktb3.full.community.common.Constants.MESSAGE_NOT_NULL_COMMENT_CONT
 
 @Schema(title = "댓글 생성 요청 DTO")
 @Getter
+@Builder
 @RequiredArgsConstructor
 public class CommentCreateRequest {
 

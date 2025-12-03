@@ -3,11 +3,13 @@ package ktb3.full.community.dto.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import ktb3.full.community.common.Constants;
 import ktb3.full.community.presentation.validator.NullableNotBlank;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Schema(title = "댓글 수정 요청 DTO")
 @Getter
+@Builder
 @RequiredArgsConstructor
 public class CommentUpdateRequest {
 
