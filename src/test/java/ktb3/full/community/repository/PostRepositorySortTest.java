@@ -1,7 +1,6 @@
 package ktb3.full.community.repository;
 
-import jakarta.persistence.EntityManager;
-import ktb3.full.community.config.JpaTest;
+import ktb3.full.community.RepositoryTestSupport;
 import ktb3.full.community.domain.entity.Post;
 import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.fixture.PostFixture;
@@ -24,11 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 
-@JpaTest
-public class PostRepositorySortTest {
-
-    @Autowired
-    private EntityManager entityManager;
+public class PostRepositorySortTest extends RepositoryTestSupport {
 
     @Autowired
     private UserRepository userRepository;
@@ -56,7 +51,6 @@ public class PostRepositorySortTest {
                 given(dateTimeProvider.getNow()).willReturn(Optional.of(baseTime.plusMinutes(i)));
                 postRepository.save(PostFixture.createPost(user));
             }
-            entityManager.clear();
 
             // when
             int pageNumber = 0;

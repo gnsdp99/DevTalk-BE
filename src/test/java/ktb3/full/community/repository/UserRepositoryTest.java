@@ -1,6 +1,6 @@
 package ktb3.full.community.repository;
 
-import ktb3.full.community.config.JpaTest;
+import ktb3.full.community.RepositoryTestSupport;
 import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.fixture.UserFixture;
 import org.junit.jupiter.api.Nested;
@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@JpaTest
-class UserRepositoryTest {
+class UserRepositoryTest extends RepositoryTestSupport {
 
     @Autowired
     private UserRepository userRepository;

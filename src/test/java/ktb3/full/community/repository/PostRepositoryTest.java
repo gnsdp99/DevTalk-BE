@@ -1,7 +1,7 @@
 package ktb3.full.community.repository;
 
 import jakarta.persistence.EntityManager;
-import ktb3.full.community.config.JpaTest;
+import ktb3.full.community.RepositoryTestSupport;
 import ktb3.full.community.domain.entity.Post;
 import ktb3.full.community.domain.entity.User;
 import ktb3.full.community.fixture.PostFixture;
@@ -16,8 +16,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@JpaTest
-class PostRepositoryTest {
+class PostRepositoryTest extends RepositoryTestSupport {
 
     @Autowired
     private EntityManager entityManager;
@@ -36,7 +35,6 @@ class PostRepositoryTest {
             // given
             User user = userRepository.save(UserFixture.createUser());
             Post post = postRepository.save(PostFixture.createPost(user));
-            entityManager.clear();
 
             // when
             Post foundPost = postRepository.findByIdActive(post.getId()).orElse(null);
@@ -50,7 +48,6 @@ class PostRepositoryTest {
             // given
             User user = userRepository.save(UserFixture.createUser());
             Post post = postRepository.save(PostFixture.createDeleted(user));
-            entityManager.clear();
 
             // when
             Post foundPost = postRepository.findByIdActive(post.getId()).orElse(null);
@@ -91,7 +88,6 @@ class PostRepositoryTest {
             User user = userRepository.save(UserFixture.createUser());
             postRepository.saveAll(PostFixture.createPosts(user, activePostCount));
             postRepository.saveAll(PostFixture.createDeletedPosts(user, deletedPostCount));
-            entityManager.clear();
 
             // when
             int pageNumber = 0;
@@ -115,7 +111,6 @@ class PostRepositoryTest {
             User user = userRepository.save(UserFixture.createUser());
             postRepository.saveAll(PostFixture.createPosts(user, withUserPostCount));
             postRepository.saveAll(PostFixture.createWithoutUserPosts(withoutUserPostCount));
-            entityManager.clear();
 
             // when
             int pageNumber = 0;
@@ -138,7 +133,6 @@ class PostRepositoryTest {
             int postCount = 10;
             User user = userRepository.save(UserFixture.createUser());
             postRepository.saveAll(PostFixture.createPosts(user, postCount));
-            entityManager.clear();
 
             // when
             postRepository.deleteAllByUserId(user.getId());
