@@ -31,22 +31,8 @@ public class UserFixture {
         return createUser(email, null, null, null, false);
     }
 
-    public static User createWithNickname(String nickname) {
-        return createUser(null, null, nickname, null, false);
-    }
-
     public static User createWithPassword(String password) {
         return createUser(null, password, null, null, false);
-    }
-
-    public static User createWithNicknameAndProfileImageName(String nickname, String profileImageName) {
-        return createUser(null, null, nickname, profileImageName, false);
-    }
-
-    public static User createWithId(long id) {
-        User user = createUser();
-        ReflectionTestUtils.setField(user, "id", id);
-        return user;
     }
 
     public static User createDeletedWithEmail(String email) {
