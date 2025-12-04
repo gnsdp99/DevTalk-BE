@@ -45,6 +45,8 @@ public class User extends AuditTime {
 
     @Builder
     private User(String email, String password, String nickname, String profileImageName, boolean isDeleted) {
+        validateEmail(email);
+        validateNickname(nickname);
         this.email = email;
         this.password = password;
         this.nickname = nickname;
@@ -53,6 +55,7 @@ public class User extends AuditTime {
     }
 
     public void updateNickname(String nickname) {
+        validateNickname(nickname);
         this.nickname = nickname;
     }
 
@@ -65,7 +68,27 @@ public class User extends AuditTime {
     }
 
     public void delete() {
+        if (isDeleted) {
+            throw new IllegalStateException("이미 삭제된 회원입니다.");
+        }
+
         this.isDeleted = true;
         this.auditDeletedAt();
+    }
+
+    private void validateEmail(String email) {
+        String pattern = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+
+        if (!email.matches(pattern)) {
+            throw new IllegalArgumentException("이메일이 유효하지 않습니다.");
+        }
+    }
+
+    private void validateNickname(String nickname) {
+        String pattern = "^[가-힣a-zA-Z0-9]{1,10}$";
+
+        if (!nickname.matches(pattern)) {
+            throw new IllegalArgumentException("닉네임이 유효하지 않습니다.");
+        }
     }
 }
