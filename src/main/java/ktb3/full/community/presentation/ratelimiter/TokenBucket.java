@@ -40,7 +40,6 @@ public class TokenBucket {
     public synchronized boolean tryConsume() {
         refill();
 
-        System.out.println("token: " + tokens.get());
         if (tokens.get() > 0) {
             tokens.decrementAndGet();
             return true;
