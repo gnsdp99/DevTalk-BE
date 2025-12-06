@@ -1,6 +1,7 @@
 package ktb3.full.community.presentation.ratelimiter;
 
 import ktb3.full.community.ControllerTestSupport;
+import ktb3.full.community.config.WithAuthMockUser;
 import ktb3.full.community.presentation.controller.PostApiController;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -23,6 +24,7 @@ class RateLimitFilterTest extends ControllerTestSupport {
     @MockitoBean
     private RateLimiter rateLimiter;
 
+    @WithAuthMockUser
     @Test
     void 버킷의_토큰수를_초과하지_않으면_요청이_허용된다() throws Exception {
         // given
@@ -39,6 +41,7 @@ class RateLimitFilterTest extends ControllerTestSupport {
                 .andExpect(jsonPath("$.data").isEmpty());;
     }
 
+    @WithAuthMockUser
     @Test
     void 버킷의_토큰수를_초과해_요청하면_요청이_거부된다() throws Exception {
         // given
