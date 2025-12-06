@@ -2,35 +2,31 @@ package ktb3.full.community.presentation.ratelimiter;
 
 import ktb3.full.community.ControllerTestSupport;
 import ktb3.full.community.presentation.controller.PostApiController;
-import ktb3.full.community.stub.StubTime;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.time.LocalDateTime;
-
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@Import({RateLimiterConfig.class})
 @WebMvcTest(controllers = {
         PostApiController.class
 })
 class RateLimitFilterTest extends ControllerTestSupport {
 
     @MockitoBean
-    private TokenBucketRegistry tokenBucketRegistry;
+    private RateLimiter rateLimiter;
 
     @Test
     void 버킷의_토큰수를_초과하지_않으면_요청이_허용된다() throws Exception {
         // given
-        StubTime time = new StubTime(LocalDateTime.of(2025, 12, 4, 20, 0, 0));
-        TokenBucket tokenBucket = TokenBucket.create(1, 0, 1, time);
-
-        given(tokenBucketRegistry.resolveBucket(any(String.class))).willReturn(tokenBucket);
+        given(rateLimiter.allowRequest(any(String.class), any(Long.class))).willReturn(true);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/posts"));
@@ -46,10 +42,7 @@ class RateLimitFilterTest extends ControllerTestSupport {
     @Test
     void 버킷의_토큰수를_초과해_요청하면_요청이_거부된다() throws Exception {
         // given
-        StubTime time = new StubTime(LocalDateTime.of(2025, 12, 4, 20, 0, 0));
-        TokenBucket tokenBucket = TokenBucket.create(0, 0, 1, time);
-
-        given(tokenBucketRegistry.resolveBucket(any(String.class))).willReturn(tokenBucket);
+        given(rateLimiter.allowRequest(anyString(), anyLong())).willReturn(false);
 
         // when
         ResultActions resultActions = mockMvc.perform(get("/posts"));
