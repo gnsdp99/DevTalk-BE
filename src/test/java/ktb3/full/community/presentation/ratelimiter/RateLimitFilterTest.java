@@ -7,14 +7,14 @@ import ktb3.full.community.presentation.controller.PostApiController;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.ResultActions;
 
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Import({RateLimiterConfig.class})
 @WebMvcTest(controllers = {
@@ -38,6 +38,9 @@ class RateLimitFilterTest extends ControllerTestSupport {
         // then
         resultActions
                 .andExpect(status().isOk())
+                .andExpect(header().exists("X-RateLimit-Limit"))
+                .andExpect(header().exists("X-RateLimit-Remaining"))
+                .andExpect(header().exists("X-RateLimit-Reset"))
                 .andExpect(jsonPath("$.code").isEmpty())
                 .andExpect(jsonPath("$.message").value("요청에 성공했습니다."))
                 .andExpect(jsonPath("$.data").isEmpty());;
@@ -56,6 +59,10 @@ class RateLimitFilterTest extends ControllerTestSupport {
         // then
         resultActions
                 .andExpect(status().isTooManyRequests())
+                .andExpect(header().exists("X-RateLimit-Limit"))
+                .andExpect(header().exists("X-RateLimit-Remaining"))
+                .andExpect(header().exists("X-RateLimit-Reset"))
+                .andExpect(header().exists(HttpHeaders.RETRY_AFTER))
                 .andExpect(jsonPath("$.code").value(4291))
                 .andExpect(jsonPath("$.message").value("요청 한도를 초과했습니다."))
                 .andExpect(jsonPath("$.data").isEmpty());;
