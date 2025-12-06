@@ -79,7 +79,7 @@ public class User extends AuditTime {
     private void validateEmail(String email) {
         String pattern = "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
 
-        if (!email.matches(pattern)) {
+        if (email == null || !email.matches(pattern)) {
             throw new IllegalArgumentException("이메일이 유효하지 않습니다.");
         }
     }
@@ -87,7 +87,7 @@ public class User extends AuditTime {
     private void validateNickname(String nickname) {
         String pattern = "^[가-힣a-zA-Z0-9]{1,10}$";
 
-        if (!nickname.matches(pattern)) {
+        if (nickname == null || !nickname.matches(pattern)) {
             throw new IllegalArgumentException("닉네임이 유효하지 않습니다.");
         }
     }
