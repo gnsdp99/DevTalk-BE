@@ -46,4 +46,18 @@ public class UserFixture {
     public static User createWithEmailAndPassword(String email, String password) {
         return createUser(email, password, null, null, false);
     }
+
+    public static User createWithId(long userId) {
+        User user = createUser(null, null, null, null, false);
+        ReflectionTestUtils.setField(user, "id", userId);
+        return user;
+    }
+
+    public static User createWithNickname(String nickname) {
+        return createUser(null, null, nickname, null, false);
+    }
+
+    public static User createWithProfileImageName(String profileImageName) {
+        return createUser(null, null, null, profileImageName, false);
+    }
 }
