@@ -2,7 +2,6 @@ package ktb3.full.community.security.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import ktb3.full.community.presentation.ratelimiter.RateLimitFilter;
-import ktb3.full.community.presentation.ratelimiter.TokenBucketRegistry;
 import ktb3.full.community.security.filter.LoginFilter;
 import ktb3.full.community.security.handler.SpaCsrfTokenRequestHandler;
 import lombok.RequiredArgsConstructor;
@@ -42,8 +41,8 @@ public class SecurityConfig {
     private final LogoutSuccessHandler logoutSuccessHandler;
     private final AccessDeniedHandler accessDeniedHandler;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final RateLimitFilter rateLimitFilter;
     private final ObjectMapper objectMapper;
-    private final TokenBucketRegistry tokenBucketRegistry;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -83,7 +82,7 @@ public class SecurityConfig {
                         .deleteCookies(SESSION_COOKIE_NAME))
 
                 .addFilterBefore(
-                        new RateLimitFilter(objectMapper, tokenBucketRegistry),
+                        rateLimitFilter,
                         UsernamePasswordAuthenticationFilter.class
                 )
                 .addFilterAt(

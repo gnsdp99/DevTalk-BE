@@ -11,23 +11,25 @@ import ktb3.full.community.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
 @Slf4j
 @RequiredArgsConstructor
+@Component
 public class RateLimitFilter extends OncePerRequestFilter {
 
+    private final RateLimiter rateLimiter;
     private final ObjectMapper objectMapper;
-    private final TokenBucketRegistry tokenBucketRegistry;
+    private final RateLimiterProperties props;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String ipAddr = request.getRemoteAddr();
-        TokenBucket bucket = tokenBucketRegistry.resolveBucket(ipAddr);
 
-        if (!bucket.tryConsume()) {
+        if (!rateLimiter.allowRequest(ipAddr, props.getNumTokensToConsume())) {
             log.info("Rate limit exceeded for {}", ipAddr);
             ApiResponse<Void> apiResponse = ApiResponse.error(ApiErrorCode.TOO_MANY_REQUESTS);
             ResponseUtil.responseJsonUtf8(response, HttpStatus.TOO_MANY_REQUESTS.value(), objectMapper.writeValueAsString(apiResponse));
