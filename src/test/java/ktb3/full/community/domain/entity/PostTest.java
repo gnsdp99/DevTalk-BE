@@ -89,4 +89,19 @@ class PostTest {
             assertThat(post.getCommentCount()).isZero();
         }
     }
+
+    @Nested
+    class delete {
+
+        @Test
+        void 게시글_삭제_시_이미_삭제된_게시글이면_예외가_발생한다() {
+            // given
+            Post post = PostFixture.createDeleted(null);
+
+            // when & then
+            assertThatThrownBy(post::delete)
+                    .isInstanceOf(IllegalStateException.class)
+                    .hasMessage("이미 삭제된 게시글입니다.");
+        }
+    }
 }

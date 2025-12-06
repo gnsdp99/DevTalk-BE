@@ -114,6 +114,10 @@ public class Post extends AuditTime {
     }
 
     public void delete() {
+        if (isDeleted) {
+            throw new IllegalStateException("이미 삭제된 게시글입니다.");
+        }
+
         this.isDeleted = true;
         this.auditDeletedAt();
     }
