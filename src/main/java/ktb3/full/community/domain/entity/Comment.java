@@ -49,6 +49,10 @@ public class Comment extends AuditTime {
     }
 
     public void delete() {
+        if (isDeleted) {
+            throw new IllegalStateException("이미 삭제된 댓글입니다.");
+        }
+
         this.isDeleted = true;
         this.auditDeletedAt();
     }
