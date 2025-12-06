@@ -39,3 +39,13 @@ server:
       cookie:
         same-site: none
         secure: true
+
+rate-limiter:
+  cache:
+    maximum-size: 10000
+    expire-after-access: 600000
+  bucket:
+    capacity: 100
+    refill-tokens: 1
+    refill-periods: 600
+  num-tokens-to-consume: 1
