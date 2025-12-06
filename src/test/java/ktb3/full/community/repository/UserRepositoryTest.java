@@ -23,7 +23,7 @@ class UserRepositoryTest extends RepositoryTestSupport {
             userRepository.save(UserFixture.createWithEmail("email@example.com"));
 
             // when
-            User user = userRepository.findByEmail("email@example.com").orElse(null);
+            User user = userRepository.findByEmailActive("email@example.com").orElse(null);
 
             // then
             assertThat(user).isNotNull();
@@ -35,7 +35,7 @@ class UserRepositoryTest extends RepositoryTestSupport {
             userRepository.save(UserFixture.createDeletedWithEmail("email@example.com"));
 
             // when
-            User user = userRepository.findByEmail("email@example.com").orElse(null);
+            User user = userRepository.findByEmailActive("email@example.com").orElse(null);
 
             // then
             assertThat(user).isNull();
