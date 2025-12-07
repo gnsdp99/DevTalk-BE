@@ -50,6 +50,7 @@ jacocoTestReport {
 test {
     finalizedBy jacocoTestReport
     finalizedBy jacocoTestCoverageVerification
+    jacoco.enabled = System.getProperty("jacoco.enabled", "true").toBoolean()
 }
 
 def commonExcludes = [
