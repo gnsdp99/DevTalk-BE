@@ -7,11 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ktb3.full.community.common.Constants;
 import ktb3.full.community.dto.request.UserLoginRequest;
-import ktb3.full.community.presentation.ratelimiter.RateLimitResult;
-import ktb3.full.community.presentation.ratelimiter.RateLimitType;
-import ktb3.full.community.presentation.ratelimiter.RateLimiter;
-import ktb3.full.community.presentation.ratelimiter.RateLimiterProperties;
-import ktb3.full.community.util.ResponseUtil;
+import ktb3.full.community.presentation.ratelimiter.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -28,9 +24,8 @@ import java.io.IOException;
 @Component
 public class LoginRateLimitFilter extends OncePerRequestFilter {
 
-    private final RateLimiter rateLimiter;
     private final ObjectMapper objectMapper;
-    private final RateLimiterProperties props;
+    private final RateLimitExecutor executor;
 
     private final RequestMatcher loginRequestMatcher = PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, Constants.LOGIN);
 
@@ -48,22 +43,26 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
         UserLoginRequest userLoginRequest = objectMapper.readValue(wrappedRequest.getInputStream(), UserLoginRequest.class);
 
         String clientKeyByIpAddr = "login:ip:" + ipAddr;
-        RateLimitResult resultByIpAddr = rateLimiter.allowRequest(clientKeyByIpAddr, props.getNumTokensToConsume(), RateLimitType.LOGIN);
-        ResponseUtil.responseRateLimitHeaders(response, resultByIpAddr, props.getLogin());
+        String logMessageByIpAddr = "Login Rate limit exceeded for IP Addr: " + ipAddr;
 
-        if (!resultByIpAddr.isConsumed()) {
-            log.info("Login Rate limit exceeded for IP Addr: {}", ipAddr);
-            ResponseUtil.responseRateLimitRejected(response, resultByIpAddr, objectMapper);
+        if (!executor.execute(
+                clientKeyByIpAddr,
+                RateLimitType.LOGIN,
+                logMessageByIpAddr,
+                response)
+        ) {
             return;
         }
 
         String clientKeyByEmail = "login:email:" + userLoginRequest.getEmail();
-        RateLimitResult resultByIpEmail = rateLimiter.allowRequest(clientKeyByEmail, props.getNumTokensToConsume(), RateLimitType.LOGIN);
-        ResponseUtil.responseRateLimitHeaders(response, resultByIpEmail, props.getLogin());
+        String logMessageByEmail = "Login Rate limit exceeded for Email: " + userLoginRequest.getEmail();
 
-        if (!resultByIpEmail.isConsumed()) {
-            log.info("Login Rate limit exceeded for Email: {}", userLoginRequest.getEmail());
-            ResponseUtil.responseRateLimitRejected(response, resultByIpEmail, objectMapper);
+        if (!executor.execute(
+                clientKeyByEmail,
+                RateLimitType.LOGIN,
+                logMessageByEmail,
+                response)
+        ) {
             return;
         }
 

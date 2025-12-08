@@ -23,7 +23,7 @@ public class BucketFactory {
     }
 
     private Bandwidth createBandwidth(RateLimitType type) {
-        RateLimiterProperties.BucketProperties props = getPolicyProps(type).getBucket();
+        RateLimiterProperties.BucketProperties props = properties.getPolicyProps(type).getBucket();
         Duration period = Duration.ofSeconds(props.getRefillPeriods());
 
         BandwidthBuilder.BandwidthBuilderRefillStage bandWithBuilder = Bandwidth.builder()
@@ -37,14 +37,6 @@ public class BucketFactory {
             case AUTHENTICATED, UNAUTHENTICATED -> bandWithBuilder
                     .refillGreedy(props.getRefillTokens(), period)
                     .build();
-        };
-    }
-
-    private RateLimiterProperties.PolicyProperties getPolicyProps(RateLimitType type) {
-        return switch (type) {
-            case LOGIN -> properties.getLogin();
-            case AUTHENTICATED -> properties.getAuthenticated();
-            case UNAUTHENTICATED -> properties.getUnauthenticated();
         };
     }
 }

@@ -1,16 +1,11 @@
 package ktb3.full.community.presentation.ratelimiter.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ktb3.full.community.common.Constants;
-import ktb3.full.community.presentation.ratelimiter.RateLimitResult;
-import ktb3.full.community.presentation.ratelimiter.RateLimitType;
-import ktb3.full.community.presentation.ratelimiter.RateLimiter;
-import ktb3.full.community.presentation.ratelimiter.RateLimiterProperties;
-import ktb3.full.community.util.ResponseUtil;
+import ktb3.full.community.presentation.ratelimiter.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -29,9 +24,7 @@ import java.io.IOException;
 @Component
 public class UnauthenticatedRateLimitFilter extends OncePerRequestFilter {
 
-    private final RateLimiter rateLimiter;
-    private final ObjectMapper objectMapper;
-    private final RateLimiterProperties props;
+    private final RateLimitExecutor executor;
 
     private final RequestMatcher requestMatcher = PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.GET, Constants.GET_POST_LIST);
 
@@ -46,13 +39,16 @@ public class UnauthenticatedRateLimitFilter extends OncePerRequestFilter {
         }
 
         String ipAddr = request.getRemoteAddr();
-        String clientKey = "ip:" + ipAddr;
-        RateLimitResult result = rateLimiter.allowRequest(clientKey, props.getNumTokensToConsume(), RateLimitType.UNAUTHENTICATED);
-        ResponseUtil.responseRateLimitHeaders(response, result, props.getUnauthenticated());
 
-        if (!result.isConsumed()) {
-            log.info("Rate limit exceeded for IP Addr: {}", ipAddr);
-            ResponseUtil.responseRateLimitRejected(response, result, objectMapper);
+        String clientKey = "ip:" + ipAddr;
+        String logMessage = "Rate limit exceeded for IP Addr: " + ipAddr;
+
+        if (!executor.execute(
+                clientKey,
+                RateLimitType.UNAUTHENTICATED,
+                logMessage,
+                response)
+        ) {
             return;
         }
 

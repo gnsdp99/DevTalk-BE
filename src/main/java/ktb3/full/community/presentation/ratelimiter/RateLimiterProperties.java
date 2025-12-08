@@ -36,4 +36,12 @@ public class RateLimiterProperties {
         private final long maximumSize;
         private final long expireAfterAccess;
     }
+
+    public RateLimiterProperties.PolicyProperties getPolicyProps(RateLimitType type) {
+        return switch (type) {
+            case LOGIN -> getLogin();
+            case AUTHENTICATED -> getAuthenticated();
+            case UNAUTHENTICATED -> getUnauthenticated();
+        };
+    }
 }

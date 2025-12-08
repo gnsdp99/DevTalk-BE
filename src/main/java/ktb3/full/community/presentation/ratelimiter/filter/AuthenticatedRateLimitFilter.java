@@ -1,17 +1,12 @@
 package ktb3.full.community.presentation.ratelimiter.filter;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import ktb3.full.community.common.Constants;
-import ktb3.full.community.presentation.ratelimiter.RateLimitResult;
-import ktb3.full.community.presentation.ratelimiter.RateLimitType;
-import ktb3.full.community.presentation.ratelimiter.RateLimiter;
-import ktb3.full.community.presentation.ratelimiter.RateLimiterProperties;
+import ktb3.full.community.presentation.ratelimiter.*;
 import ktb3.full.community.security.userdetails.AuthUserDetails;
-import ktb3.full.community.util.ResponseUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -19,7 +14,6 @@ import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.servlet.util.matcher.PathPatternRequestMatcher;
-import org.springframework.security.web.util.matcher.NegatedRequestMatcher;
 import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -31,9 +25,7 @@ import java.io.IOException;
 @Component
 public class AuthenticatedRateLimitFilter extends OncePerRequestFilter {
 
-    private final RateLimiter rateLimiter;
-    private final ObjectMapper objectMapper;
-    private final RateLimiterProperties props;
+    private final RateLimitExecutor executor;
 
     private final RequestMatcher loginRequestMatcher = PathPatternRequestMatcher.withDefaults().matcher(HttpMethod.POST, Constants.LOGIN);
 
@@ -49,14 +41,16 @@ public class AuthenticatedRateLimitFilter extends OncePerRequestFilter {
 
         AuthUserDetails principal = (AuthUserDetails) authentication.getPrincipal();
         Long userId = principal.getUserId();
+
         String clientKey = "userId:" + userId;
+        String logMessage = "Rate limit exceeded for userId: " + userId;
 
-        RateLimitResult result = rateLimiter.allowRequest(clientKey, props.getNumTokensToConsume(), RateLimitType.AUTHENTICATED);
-        ResponseUtil.responseRateLimitHeaders(response, result, props.getAuthenticated());
-
-        if (!result.isConsumed()) {
-            log.info("Rate limit exceeded for userId: {}", userId);
-            ResponseUtil.responseRateLimitRejected(response, result, objectMapper);
+        if (!executor.execute(
+                clientKey,
+                RateLimitType.AUTHENTICATED,
+                logMessage,
+                response)
+        ) {
             return;
         }
 
