@@ -42,8 +42,8 @@ class LoginRateLimitFilterTest extends IntegrationTestSupport {
 
         RateLimitResult allowed = RateLimitResultFixture.createAllowedResult();
 
-        given(rateLimiter.allowRequest(startsWith("ip:127.0.0.1"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
-        given(rateLimiter.allowRequest(startsWith("email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
+        given(rateLimiter.allowRequest(startsWith("login:ip:127.0.0.1"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
+        given(rateLimiter.allowRequest(startsWith("login:email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/users/login")
@@ -76,8 +76,8 @@ class LoginRateLimitFilterTest extends IntegrationTestSupport {
         RateLimitResult allowed = RateLimitResultFixture.createAllowedResult();
         RateLimitResult disallowed = RateLimitResultFixture.createDisallowedResult();
 
-        given(rateLimiter.allowRequest(startsWith("ip:127.0.0.1"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(disallowed);
-        given(rateLimiter.allowRequest(startsWith("email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
+        given(rateLimiter.allowRequest(startsWith("login:ip:127.0.0.1"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(disallowed);
+        given(rateLimiter.allowRequest(startsWith("login:email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/users/login")
@@ -111,8 +111,8 @@ class LoginRateLimitFilterTest extends IntegrationTestSupport {
         RateLimitResult allowed = RateLimitResultFixture.createAllowedResult();
         RateLimitResult disallowed = RateLimitResultFixture.createDisallowedResult();
 
-        given(rateLimiter.allowRequest(startsWith("ip:127.0.0.1"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
-        given(rateLimiter.allowRequest(startsWith("email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(disallowed);
+        given(rateLimiter.allowRequest(startsWith("login:ip:127.0.0.1"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
+        given(rateLimiter.allowRequest(startsWith("login:email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(disallowed);
 
         // when
         ResultActions resultActions = mockMvc.perform(post("/users/login")

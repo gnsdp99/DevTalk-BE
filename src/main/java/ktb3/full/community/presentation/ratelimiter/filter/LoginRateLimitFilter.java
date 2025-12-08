@@ -47,7 +47,7 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
         String ipAddr = wrappedRequest.getRemoteAddr();
         UserLoginRequest userLoginRequest = objectMapper.readValue(wrappedRequest.getInputStream(), UserLoginRequest.class);
 
-        String clientKeyByIpAddr = "ip:" + ipAddr;
+        String clientKeyByIpAddr = "login:ip:" + ipAddr;
         RateLimitResult resultByIpAddr = rateLimiter.allowRequest(clientKeyByIpAddr, props.getNumTokensToConsume(), RateLimitType.LOGIN);
         ResponseUtil.responseRateLimitHeaders(response, resultByIpAddr, props.getLogin());
 
@@ -57,7 +57,7 @@ public class LoginRateLimitFilter extends OncePerRequestFilter {
             return;
         }
 
-        String clientKeyByEmail = "email:" + userLoginRequest.getEmail();
+        String clientKeyByEmail = "login:email:" + userLoginRequest.getEmail();
         RateLimitResult resultByIpEmail = rateLimiter.allowRequest(clientKeyByEmail, props.getNumTokensToConsume(), RateLimitType.LOGIN);
         ResponseUtil.responseRateLimitHeaders(response, resultByIpEmail, props.getLogin());
 
