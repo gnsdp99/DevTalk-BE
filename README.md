@@ -6,6 +6,7 @@ DevTalk은 개발자들이 편하게 질문하고 답하며 지식을 공유할 
 
 - 개발 기간: 2025.09.22 ~ 2025.12.07
 - 개발 인원: 1명 (개인 프로젝트)
+- [FE Repo](https://github.com/100-hours-a-week/3-ian-kim-community-fe)
 
 ## 주요 기능
 
