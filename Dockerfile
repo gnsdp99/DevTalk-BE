@@ -1,5 +1,5 @@
 # 1. Base Image
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre-alpine
 
 # 2. 작업 디렉토리 설정
 WORKDIR /app
