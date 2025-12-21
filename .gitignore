@@ -40,3 +40,4 @@ out/
 
 .env
 /actions-runner
+/nginx/conf.d/service-url.inc

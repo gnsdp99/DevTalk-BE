@@ -1,0 +1,58 @@
+services:
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d # 호스트 설정을 컨테이너와 공유
+    depends_on:
+      - app-blue
+      - app-green
+
+  app-blue:
+    build: .
+    container_name: app-blue
+    image: devtalk:latest
+    ports:
+      - "8081:8080" # 호스트 8081 -> 컨테이너 8080
+    environment:
+      - SERVER_PORT=8080
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  app-green:
+    build: .
+    container_name: app-green
+    image: devtalk:latest
+    ports:
+      - "8082:8080" # 호스트 8082 -> 컨테이너 8080
+    environment:
+      - SERVER_PORT=8080
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: on-failure
+
+  # 메인 데이터베이스
+  db:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=devtalk
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./db/init.d:/docker-entrypoint-initdb.d # 스크립트 마운트
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ] # MySQL에게 핑을 날림
+      interval: 10s   # 10초마다 검사
+      timeout: 5s     # 5초 안에 응답 없으면 실패 처리
+      retries: 5      # 5번 실패하면 진짜 죽은 걸로 간주
+      start_period: 30s # 초기화 시간이 기니까 처음 30초는 실패해도 봐줌
