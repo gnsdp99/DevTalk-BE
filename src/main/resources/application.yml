@@ -2,12 +2,6 @@ spring:
   application:
     name: community
 
-  datasource:
-    url: jdbc:mysql://localhost:3306/community
-    username: root
-    password:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-
   jpa:
     properties:
       hibernate:
@@ -22,23 +16,8 @@ logging:
     org.hibernate.orm.jdbc.bind: trace
     org.springframework.security: debug
 
-file:
-  path:
-    base: src/main/resources/static
-    image: /images
-
 server:
-  port: 8443
-  ssl:
-    enabled: true
-    certificate: classpath:localhost.pem
-    certificate-private-key: classpath:localhost-key.pem
-
-  servlet:
-    session:
-      cookie:
-        same-site: none
-        secure: true
+  port: 8080
 
 rate-limiter:
   num-tokens-to-consume: 1

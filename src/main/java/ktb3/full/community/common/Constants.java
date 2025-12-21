@@ -24,6 +24,7 @@ public abstract class Constants {
 
     // API
     public static final String[] WHITE_LIST = {
+            "/actuator/health",
             "/users/email-validation",
             "/users/nickname-validation",
             "/users/check",
