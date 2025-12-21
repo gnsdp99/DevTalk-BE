@@ -1,32 +1,60 @@
-name: Local Blue-Green Deploy
+name: CI/CD Pipeline
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-  deploy:
-    runs-on: self-hosted
-
-    env:
-      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+  # -----------------------------------------------------
+  # Job 1: CI (빌드 및 테스트)
+  # -----------------------------------------------------
+  build-and-test:
+    runs-on: ubuntu-latest # CI는 굳이 내 서버에서 안 해도 됨 (GitHub 공짜 서버 사용 추천)
 
     steps:
       - uses: actions/checkout@v5
 
-      # 자바 빌드 (Gradle 기준)
-      - uses: actions/setup-java@v5
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
         with:
-          distribution: 'temurin'
           java-version: '21'
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+          distribution: 'temurin'
+          cache: 'gradle'
 
       - name: Build with Gradle
-        run: ./gradlew build test
+        run: |
+          chmod +x gradlew
+          ./gradlew build test 
 
-      # 배포 스크립트 실행
+      # [핵심] 빌드 결과물(Jar)을 Artifact로 저장해서 다음 Job에 넘김
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v5
+        with:
+          name: built-jar
+          path: build/libs/*.jar
+          retention-days: 1 # 하루만 보관 (용량 절약)
+
+  # -----------------------------------------------------
+  # Job 2: CD (배포)
+  # -----------------------------------------------------
+  deploy:
+    needs: build-and-test # [중요] CI가 성공해야만 실행됨!
+    runs-on: self-hosted  # 배포는 내 서버(Runner)에서 실행
+
+    steps:
+      - uses: actions/checkout@v5 # 스크립트 실행을 위해 코드 체크아웃 필요
+
+      # [핵심] 아까 저장한 Artifact(Jar)을 다운로드
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: built-jar
+          path: build/libs/
+
+      - name: Create .env file
+        run: |
+          echo "MYSQL_ROOT_PASSWORD=${{ secrets.MYSQL_ROOT_PASSWORD }}" >> .env
+
       - name: Run Deploy Script
         run: |
           chmod +x ./scripts/deploy.sh
