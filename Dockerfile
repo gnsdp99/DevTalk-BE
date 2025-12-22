@@ -1,7 +1,7 @@
 # 1. Builder 단계: JAR 파일에서 레이어를 추출(Extract)합니다.
 
 # "builder"라는 이름으로 임시 작업 공간을 만듭니다.
-FROM eclipse-temurin:21-jre-alpine as builder
+FROM eclipse-temurin:21-jre-alpine AS builder
 
 # 작업 폴더를 만듭니다.
 WORKDIR /builder
