@@ -34,7 +34,7 @@ class AuthenticatedUserApiControllerTest extends ControllerTestSupport {
             given(userService.getUserAccount(1L)).willReturn(response);
 
             // when
-            ResultActions resultActions = mockMvc.perform(get("/user"));
+            ResultActions resultActions = mockMvc.perform(get("/api/user"));
 
             // then
             resultActions
@@ -66,7 +66,7 @@ class AuthenticatedUserApiControllerTest extends ControllerTestSupport {
             given(userService.updateAccount(any(Long.class), any(UserAccountUpdateRequest.class))).willReturn(result);
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/user")
+            ResultActions resultActions = mockMvc.perform(patch("/api/user")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -87,7 +87,7 @@ class AuthenticatedUserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/user")
+            ResultActions resultActions = mockMvc.perform(patch("/api/user")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -112,7 +112,7 @@ class AuthenticatedUserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/user/password")
+            ResultActions resultActions = mockMvc.perform(patch("/api/user/password")
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -133,7 +133,7 @@ class AuthenticatedUserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/user/password")
+            ResultActions resultActions = mockMvc.perform(patch("/api/user/password")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -155,7 +155,7 @@ class AuthenticatedUserApiControllerTest extends ControllerTestSupport {
             // given
 
             // when
-            ResultActions resultActions = mockMvc.perform(delete("/user"));
+            ResultActions resultActions = mockMvc.perform(delete("/api/user"));
 
             // then
             resultActions

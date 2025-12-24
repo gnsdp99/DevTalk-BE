@@ -24,17 +24,17 @@ public abstract class Constants {
 
     // API
     public static final String[] WHITE_LIST = {
-            "/actuator/health",
-            "/users/email-validation",
-            "/users/nickname-validation",
-            "/users/check",
+            "/api/actuator/health",
+            "/api/users/email-validation",
+            "/api/users/nickname-validation",
+            "/api/users/check",
             "/images/**",
     };
 
-    public static final String REGISTER = "/users";
-    public static final String LOGIN = "/users/login";
-    public static final String LOGOUT = "/user/logout";
-    public static final String GET_POST_LIST = "/posts";
+    public static final String REGISTER = "/api/users";
+    public static final String LOGIN = "/api/users/login";
+    public static final String LOGOUT = "/api/user/logout";
+    public static final String GET_POST_LIST = "/api/posts";
 
     // etc
     public static final String DELETED_AUTHOR = "(탈퇴한 회원)";

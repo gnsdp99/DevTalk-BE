@@ -21,6 +21,7 @@ import java.net.URI;
 
 @Validated
 @RequiredArgsConstructor
+@RequestMapping("/api")
 @RestController
 public class CommentApiController implements CommentApi {
 

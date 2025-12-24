@@ -29,7 +29,7 @@ class UserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users")
+            ResultActions resultActions = mockMvc.perform(post("/api/users")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -54,7 +54,7 @@ class UserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users")
+            ResultActions resultActions = mockMvc.perform(post("/api/users")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -78,7 +78,7 @@ class UserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users")
+            ResultActions resultActions = mockMvc.perform(post("/api/users")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -102,7 +102,7 @@ class UserApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users")
+            ResultActions resultActions = mockMvc.perform(post("/api/users")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -125,7 +125,7 @@ class UserApiControllerTest extends ControllerTestSupport {
             // given
 
             // when
-            ResultActions resultActions = mockMvc.perform(get("/users/check"));
+            ResultActions resultActions = mockMvc.perform(get("/api/users/check"));
 
             // then
             resultActions
@@ -141,7 +141,7 @@ class UserApiControllerTest extends ControllerTestSupport {
             // given
 
             // when
-            ResultActions resultActions = mockMvc.perform(get("/users/check"));
+            ResultActions resultActions = mockMvc.perform(get("/api/users/check"));
 
             // then
             resultActions

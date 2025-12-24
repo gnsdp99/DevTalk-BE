@@ -16,7 +16,7 @@ import java.net.URI;
 
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RestController
 public class UserApiController implements UserApi {
 

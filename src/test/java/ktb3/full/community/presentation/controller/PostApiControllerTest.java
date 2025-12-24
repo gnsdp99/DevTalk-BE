@@ -36,7 +36,7 @@ class PostApiControllerTest extends ControllerTestSupport {
             given(postService.getAllPosts(request)).willReturn(result);
 
             // when
-            ResultActions resultActions = mockMvc.perform(get("/posts")
+            ResultActions resultActions = mockMvc.perform(get("/api/posts")
                     .param("page", "0")
                     .param("size", "10"));
 
@@ -64,7 +64,7 @@ class PostApiControllerTest extends ControllerTestSupport {
             given(postService.getPost(userId, postId)).willReturn(result);
 
             // when
-            ResultActions resultActions = mockMvc.perform(get("/posts/{postId}", postId));
+            ResultActions resultActions = mockMvc.perform(get("/api/posts/{postId}", postId));
 
             // then
             resultActions
@@ -90,7 +90,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/posts")
+            ResultActions resultActions = mockMvc.perform(post("/api/posts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -115,7 +115,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/posts")
+            ResultActions resultActions = mockMvc.perform(post("/api/posts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -139,7 +139,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/posts")
+            ResultActions resultActions = mockMvc.perform(post("/api/posts")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -166,7 +166,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/posts/{postId}", postId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/posts/{postId}", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -189,7 +189,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/posts/{postId}", postId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/posts/{postId}", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -213,7 +213,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/posts/{postId}", postId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/posts/{postId}", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -236,7 +236,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/posts/{postId}", postId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/posts/{postId}", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -259,7 +259,7 @@ class PostApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/posts/{postId}", postId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/posts/{postId}", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -282,7 +282,7 @@ class PostApiControllerTest extends ControllerTestSupport {
             long postId = 1L;
 
             // when
-            ResultActions resultActions = mockMvc.perform(delete("/posts/{postId}", postId));
+            ResultActions resultActions = mockMvc.perform(delete("/api/posts/{postId}", postId));
 
             // then
             resultActions
@@ -303,7 +303,7 @@ class PostApiControllerTest extends ControllerTestSupport {
             long postId = 1L;
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/posts/{postId}/like", postId));
+            ResultActions resultActions = mockMvc.perform(post("/api/posts/{postId}/like", postId));
 
             // then
             resultActions

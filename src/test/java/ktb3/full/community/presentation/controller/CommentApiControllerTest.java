@@ -39,7 +39,7 @@ class CommentApiControllerTest extends ControllerTestSupport {
             given(commentService.getAllComments(postId, request)).willReturn(result);
 
             // when
-            ResultActions resultActions = mockMvc.perform(get("/posts/{postId}/comments", postId)
+            ResultActions resultActions = mockMvc.perform(get("/api/posts/{postId}/comments", postId)
                     .param("page", "0")
                     .param("size", "10"));
 
@@ -74,7 +74,7 @@ class CommentApiControllerTest extends ControllerTestSupport {
             given(commentService.createComment(eq(userId), eq(postId), any(CommentCreateRequest.class))).willReturn(result);
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/posts/{postId}/comments", postId)
+            ResultActions resultActions = mockMvc.perform(post("/api/posts/{postId}/comments", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -98,7 +98,7 @@ class CommentApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/posts/{postId}/comments", postId)
+            ResultActions resultActions = mockMvc.perform(post("/api/posts/{postId}/comments", postId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -125,7 +125,7 @@ class CommentApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/comments/{commentId}", commentId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/comments/{commentId}", commentId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -148,7 +148,7 @@ class CommentApiControllerTest extends ControllerTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/comments/{commentId}", commentId)
+            ResultActions resultActions = mockMvc.perform(patch("/api/comments/{commentId}", commentId)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -171,7 +171,7 @@ class CommentApiControllerTest extends ControllerTestSupport {
             long commentId = 1L;
 
             // when
-            ResultActions resultActions = mockMvc.perform(delete("/comments/{commentId}", commentId));
+            ResultActions resultActions = mockMvc.perform(delete("/api/comments/{commentId}", commentId));
 
             // then
             resultActions

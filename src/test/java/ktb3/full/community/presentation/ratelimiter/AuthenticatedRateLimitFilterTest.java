@@ -32,7 +32,7 @@ class AuthenticatedRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("userId:100"), anyLong(), any(RateLimitType.class))).willReturn(allowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/posts"));
+        ResultActions resultActions = mockMvc.perform(get("/api/posts"));
 
         // then
         resultActions
@@ -54,7 +54,7 @@ class AuthenticatedRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("userId:200"), anyLong(), any(RateLimitType.class))).willReturn(disallowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/posts"));
+        ResultActions resultActions = mockMvc.perform(get("/api/posts"));
 
         // then
         resultActions

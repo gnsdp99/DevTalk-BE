@@ -36,7 +36,7 @@ class UnauthenticatedRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("ip:127.0.0.1"), anyLong(), eq(RateLimitType.UNAUTHENTICATED))).willReturn(allowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/posts")
+        ResultActions resultActions = mockMvc.perform(get("/api/posts")
                 .with(request -> {
                     request.setRemoteAddr("127.0.0.1");
                     return request;
@@ -61,7 +61,7 @@ class UnauthenticatedRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("ip:127.0.0.1"), anyLong(), eq(RateLimitType.UNAUTHENTICATED))).willReturn(disallowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(get("/posts")
+        ResultActions resultActions = mockMvc.perform(get("/api/posts")
                 .with(request -> {
                     request.setRemoteAddr("127.0.0.1");
                     return request;

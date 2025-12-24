@@ -22,7 +22,7 @@ import java.net.URI;
 
 @Validated
 @RequiredArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/api/posts")
 @RestController
 public class PostApiController implements PostApi {
 

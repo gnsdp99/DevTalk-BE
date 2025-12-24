@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RestController
 public class AuthenticatedUserApiController implements AuthenticatedUserApi {
 

@@ -46,7 +46,7 @@ class LoginRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("login:email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/users/login")
+        ResultActions resultActions = mockMvc.perform(post("/api/users/login")
                 .with(request -> {
                     request.setRemoteAddr("127.0.0.1");
                     return request;
@@ -80,7 +80,7 @@ class LoginRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("login:email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(allowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/users/login")
+        ResultActions resultActions = mockMvc.perform(post("/api/users/login")
                 .with(request -> {
                     request.setRemoteAddr("127.0.0.1");
                     return request;
@@ -115,7 +115,7 @@ class LoginRateLimitFilterTest extends IntegrationTestSupport {
         given(rateLimiter.allowRequest(startsWith("login:email:email@example.com"), anyLong(), eq(RateLimitType.LOGIN))).willReturn(disallowed);
 
         // when
-        ResultActions resultActions = mockMvc.perform(post("/users/login")
+        ResultActions resultActions = mockMvc.perform(post("/api/users/login")
                 .with(request -> {
                     request.setRemoteAddr("127.0.0.1");
                     return request;

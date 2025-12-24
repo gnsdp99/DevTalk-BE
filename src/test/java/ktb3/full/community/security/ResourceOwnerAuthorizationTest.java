@@ -57,7 +57,7 @@ public class ResourceOwnerAuthorizationTest extends IntegrationTestSupport {
             // when
             CommentUpdateRequest request = new CommentUpdateRequest("updated content");
 
-            ResultActions resultActions = mockMvc.perform(patch("/comments/{commentId}", comment.getId())
+            ResultActions resultActions = mockMvc.perform(patch("/api/comments/{commentId}", comment.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
                     .with(csrf()));
@@ -82,7 +82,7 @@ public class ResourceOwnerAuthorizationTest extends IntegrationTestSupport {
             CommentUpdateRequest request = new CommentUpdateRequest("updated content");
 
             // when
-            ResultActions resultActions = mockMvc.perform(patch("/comments/{commentId}", comment.getId())
+            ResultActions resultActions = mockMvc.perform(patch("/api/comments/{commentId}", comment.getId())
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request))
                     .with(csrf()));

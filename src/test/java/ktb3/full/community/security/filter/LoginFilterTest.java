@@ -47,7 +47,7 @@ class LoginFilterTest extends IntegrationTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users/login")
+            ResultActions resultActions = mockMvc.perform(post("/api/users/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -70,7 +70,7 @@ class LoginFilterTest extends IntegrationTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users/login")
+            ResultActions resultActions = mockMvc.perform(post("/api/users/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
@@ -94,7 +94,7 @@ class LoginFilterTest extends IntegrationTestSupport {
                     .build();
 
             // when
-            ResultActions resultActions = mockMvc.perform(post("/users/login")
+            ResultActions resultActions = mockMvc.perform(post("/api/users/login")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(request)));
 
